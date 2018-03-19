@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "958250178583",
+    "firebase_url": "https://gladesville-horsnby.firebaseio.com",
+    "project_id": "gladesville-horsnby",
+    "storage_bucket": "gladesville-horsnby.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:958250178583:android:ff3aa22328632be0",
+        "android_client_info": {
+          "package_name": "com.horsnby.gladesvillehorsnby"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "958250178583-ajgh3klr0mq64gs8fbapa1dpumatnh5g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj5DgZtcL2mIx3BoPRvCk1jYgwJXdiofA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
