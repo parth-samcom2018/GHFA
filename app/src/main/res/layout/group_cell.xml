@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativelayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:scrollbars="vertical"
+        android:visibility="gone">
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/relativelayout"
+            android:layout_width="220dp"
+            android:layout_height="200dp"
+            android:layout_margin="5dp">
+
+            <ImageView
+                android:id="@+id/myImageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/group_first"
+                android:scaleType="fitXY"
+                android:layout_centerInParent="true"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar_group"
+                android:indeterminateTintMode="src_atop"
+                android:indeterminateTint="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:indeterminate="true"/>
+
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:text="Sports Club HQ"
+                android:textColor="@color/white"
+                android:fontFamily="@font/lato_regular"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:visibility="gone"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="180dp"
+        android:orientation="vertical"
+        android:layout_margin="5dp"
+        android:weightSum="1">
+
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/myImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/splashlogo"
+                android:scaleType="fitXY"/>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:text="Text 1"
+                android:textColor="@color/white"
+                android:fontFamily="@font/lato_regular"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:lines="2"
+                android:singleLine="false"
+                android:textSize="14sp"
+                android:visibility="visible"
+                />
+
+
+
+        </FrameLayout>
+    </LinearLayout>
+</RelativeLayout>
