@@ -423,7 +423,6 @@ public class Registration extends BaseVC {
                         String name = "Gladesville Horsnby";
                         registerModel.GroupName = name;
                         makeRegistrationRequest(registerModel);
-
                     }
                 }
 
@@ -457,7 +456,6 @@ public class Registration extends BaseVC {
                 Login.justRegisteredPassword = registerModel.password;
 
                 finish();
-
 
             }
 
@@ -526,7 +524,6 @@ public class Registration extends BaseVC {
 
         else {
 
-            //registerAction();
             registerAction1();
         }
 
@@ -557,13 +554,7 @@ public class Registration extends BaseVC {
         this.finish();
     }
 
-    private void choosePhotoAction()
-    {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        // Start the Intent
-        startActivityForResult(galleryIntent, REQUEST_PICK_IMAGE);
-    }
+
 
     private Uri capturedImageUri;
     String mCurrentPhotoPath;
