@@ -174,7 +174,7 @@ public class Registration extends BaseVC {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //registerAction();
+
                 showAlert();
             }
         });
@@ -528,7 +528,6 @@ public class Registration extends BaseVC {
         }
 
     }
-
 
 
     public static void saveToPreferences(Context context, String key,
