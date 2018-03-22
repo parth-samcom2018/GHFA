@@ -1,9 +1,11 @@
 package com.horsnby.gladesvillehorsnby;
 
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -11,7 +13,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,7 +30,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class Login extends AppCompatActivity {
+public class Login extends BaseVC {
 
     private static final String TAG = "RegisterToken";
     private TextView DeviceID;
@@ -34,6 +38,7 @@ public class Login extends AppCompatActivity {
 
     private EditText mEmailView,mPasswordView;
     private Button btn_register;
+    private TextView tv_forgot1;
     public static String justRegisteredUsername = null;
     public static String justRegisteredPassword = null;
 
@@ -46,6 +51,14 @@ public class Login extends AppCompatActivity {
         mEmailView = findViewById(R.id.et_username);
         mPasswordView = findViewById(R.id.et_password);
         btn_register = findViewById(R.id.register_button);
+        tv_forgot1 = findViewById(R.id.tv_forgot1);
+
+        tv_forgot1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                forgot();
+            }
+        });
 
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,8 +75,7 @@ public class Login extends AppCompatActivity {
                 if (mEmailView.getText().toString().isEmpty() && mPasswordView.getText().toString().isEmpty()){
 
                     Toast.makeText(Login.this, "Username and Password Missing!", Toast.LENGTH_SHORT).show();
-
-                    return ;
+                    return;
                 }
                 attemptLogin();
             }
@@ -90,6 +102,63 @@ public class Login extends AppCompatActivity {
         Log.i(TAG, "Registration Device: " + unique_id);
     }
 
+    private void forgot() {
+
+        final Dialog dialog = new Dialog(Login.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.custom_dialogbox_register);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        final EditText etEmail = dialog.findViewById(R.id.etName);
+
+        Button dialogBtn_done = dialog.findViewById(R.id.btn_dialog);
+        dialogBtn_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String email = etEmail.getText().toString();
+                if(email.isEmpty())
+                {
+                    Toast.makeText(Login.this, "You must provide an Email ID", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(!email.matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+")){
+                    Toast toast = Toast.makeText(Login.this, "Invalid Email ID", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
+                    dialog.dismiss();
+                    return;
+                }
+
+                final ProgressDialog pd = DM.getPD(Login.this, "Sending mail...");
+                pd.show();
+
+                DM.getApi().forgetPassword(DM.getAuthString(), email, new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+
+                        Toast.makeText(Login.this, "Mail Send success!", Toast.LENGTH_LONG).show();
+                        DM.hideKeyboard(Login.this);
+                        pd.dismiss();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                        Toast.makeText(Login.this, "Failed Send mail!", Toast.LENGTH_LONG).show();
+                        DM.hideKeyboard(Login.this);
+                        pd.dismiss();
+                    }
+                });
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+
     private void register() {
 
         Intent i = new Intent(this, Registration.class);
@@ -110,7 +179,6 @@ public class Login extends AppCompatActivity {
         DM.member.memberId = tokenModel.memberId;
 
         Log.d("HQ","here is a memberID"+DM.member.memberId);
-
 
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -199,8 +267,8 @@ public class Login extends AppCompatActivity {
 
                     //get the device TOKEN id in background...set for push
 
-                    Intent service = new Intent(Login.this, RegistrationIntentService.class);
-                    startService(service);
+                    /*Intent service = new Intent(Login.this, RegistrationIntentService.class);
+                    startService(service);*/
 
                     proceed();
 

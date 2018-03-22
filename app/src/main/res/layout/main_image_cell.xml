@@ -112,7 +112,7 @@
                         android:fontFamily="@font/lato_regular"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Gladesville Horsnby"
+                        android:text="Sports Club HQ"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                         android:textColor="@color/white"
                         android:layout_alignParentLeft="true" />

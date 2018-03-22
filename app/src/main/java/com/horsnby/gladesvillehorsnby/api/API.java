@@ -4,6 +4,7 @@ package com.horsnby.gladesvillehorsnby.api;
 import com.horsnby.gladesvillehorsnby.models.Article;
 import com.horsnby.gladesvillehorsnby.models.ArticleComment;
 import com.horsnby.gladesvillehorsnby.models.ArticleResponse;
+import com.horsnby.gladesvillehorsnby.models.ChangePW;
 import com.horsnby.gladesvillehorsnby.models.Event;
 import com.horsnby.gladesvillehorsnby.models.EventResponse;
 import com.horsnby.gladesvillehorsnby.models.Folder;
@@ -46,10 +47,22 @@ public interface API {
                       @Field("password") String password,
                       Callback<Token> callback);
 
+    @FormUrlEncoded
+    @POST("/apiv2/account/forgotpassword")
+    public void forgetPassword(@Header("Authorization") String auth,
+                               @Field("email") String email,
+                               Callback<Response> callback);
+
     @POST("/apiv2/account/register")
     public void register(@Header("Authorization") String auth,
                          @Body Register registerModel,
                          Callback<Response> callback);
+
+    @FormUrlEncoded
+    @POST("/apiv2/account/setpassword")
+    public void postNewPassword(@Header("Authorization")String auth,
+                                @Body ChangePW changePWModel,
+                                Callback<Response> callback);
 
     //new api v2
     @FormUrlEncoded

@@ -274,7 +274,7 @@ public class NoticeboardFragment extends Fragment {
 
 
             @Override
-            public View getView(final int position, View convertView, ViewGroup parent) {
+            public View getView(final int position, View convertView, final ViewGroup parent) {
 
                 if (convertView == null) {
 
@@ -415,23 +415,6 @@ public class NoticeboardFragment extends Fragment {
                                 }
                             });
 
-                            /*DM.getApi().getMediaAlbums(DM.getAuthString(), n.notificationItemId, new Callback<MediaAlbumResponse>() {
-                                @Override
-                                public void success(MediaAlbumResponse mediaAlbumResponse, Response response) {
-                                    pd.dismiss();
-                                    MediaDetailVC.mediaAlbum = mediaAlbumResponse.getData();
-                                    MediaDetailVC.selectedMediaId = n.mediaId; //can be null
-
-                                    Intent i = new Intent(NoticeboardFragment.this.getActivity(), MediaDetailVC.class);
-                                    startActivity(i);
-                                }
-
-                                @Override
-                                public void failure(RetrofitError error) {
-                                    pd.dismiss();
-                                    Toast.makeText(getActivity(), "Could not load media, try later", Toast.LENGTH_LONG).show();
-                                }
-                            });*/
                         }
 
 
@@ -481,40 +464,7 @@ public class NoticeboardFragment extends Fragment {
                                 }
                             });
 
-                            /*DM.getApi().getArticles(DM.getAuthString(), n.notificationItemId, new Callback<ArticleResponse>() {
-                                @Override
-                                public void success(final ArticleResponse article, Response response) {
-                                    DM.getApi().getAllGrouping(DM.getAuthString(), new Callback<GroupResponse>() {
-                                        @Override
-                                        public void success(GroupResponse groups, Response response) {
-                                            pd.dismiss();
-                                            for(Group g : groups.getData()){
-                                                if (g.groupId == n.familyId){
-                                                    ArticleVC.group = g;
-                                                    break;
-                                                }
-                                            }
 
-                                            ArticleVC.article =  article.getData();
-                                            Intent i = new Intent(NoticeboardFragment.this.getActivity(), ArticleVC.class);
-                                            startActivity(i);
-                                        }
-
-                                        @Override
-                                        public void failure(RetrofitError error) {
-                                            pd.dismiss();
-                                            Toast.makeText(getActivity(), "Could not load " + error.getMessage(), Toast.LENGTH_LONG).show();
-                                        }
-                                    });
-                                }
-
-                                @Override
-                                public void failure(RetrofitError error) {
-                                    pd.dismiss();
-                                    Toast.makeText(getActivity(), "Could not load article, try later " + error.getMessage(), Toast.LENGTH_LONG).show();
-
-                                }
-                            });*/
                         }
 
 
@@ -527,6 +477,7 @@ public class NoticeboardFragment extends Fragment {
                                 public void success(Event event, Response response) {
 
                                     pd.dismiss();
+
                                     EventVC.event = event;
                                     Intent i = new Intent(NoticeboardFragment.this.getActivity(), EventVC.class);
                                     startActivity(i);
@@ -540,21 +491,6 @@ public class NoticeboardFragment extends Fragment {
                                 }
                             });
 
-                            /*DM.getApi().getEvents(DM.getAuthString(), n.notificationItemId, new Callback<EventResponse>() {
-                                @Override
-                                public void success(EventResponse eventResponse, Response response) {
-                                    pd.dismiss();
-                                    EventVC.event = eventResponse.getData();
-                                    Intent i = new Intent(NoticeboardFragment.this.getActivity(), EventVC.class);
-                                    startActivity(i);
-                                }
-
-                                @Override
-                                public void failure(RetrofitError error) {
-                                    pd.dismiss();
-                                    Toast.makeText(getActivity(), "Could not load event, try later", Toast.LENGTH_LONG).show();
-                                }
-                            });*/
 
                         }
                     }
@@ -645,7 +581,6 @@ public class NoticeboardFragment extends Fragment {
         }
 
         //Load user groups secretly in background
-
         DM.getApi().getAllGrouping(auth, new Callback<GroupResponse>() {
             @Override
             public void success(GroupResponse groupResponse, Response response) {
@@ -662,7 +597,7 @@ public class NoticeboardFragment extends Fragment {
 
     private class RoundedCornersTransform implements Transformation {
 
-        public Bitmap getRoundedCornerBitmap(Bitmap bitmap, float r, float v, float r1, float v1) {
+        public  Bitmap getRoundedCornerBitmap(Bitmap bitmap, float r, float v, float r1, float v1) {
             Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
                     bitmap.getHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(output);

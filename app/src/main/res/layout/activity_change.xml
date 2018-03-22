@@ -2,6 +2,8 @@
 <RelativeLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/login_bg">
 
     <ScrollView
@@ -12,12 +14,11 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_above="@+id/mainLayout"
                 android:layout_alignParentTop="true"
                 android:id="@+id/headerLayout">
@@ -29,8 +30,8 @@
                     android:gravity="center_horizontal">
 
                     <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:src="@drawable/logo_log_in"
                         android:scaleType="fitCenter"/>
 
@@ -44,113 +45,129 @@
                 android:layout_centerVertical="true"
                 android:id="@+id/mainLayout"
                 android:orientation="vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:text="@string/prompt_email"
+                    android:text="@string/prompt_new_password"
                     android:textStyle="bold"
+                    android:layout_marginTop="15dp"
                     android:layout_marginBottom="10dp"/>
 
-                <FrameLayout
-                    android:layout_width="fill_parent"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
                     android:background="@drawable/editshape">
 
-                    <EditText
-                        android:id="@+id/et_username"
-                        android:layout_width="fill_parent"
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:elevation="10dp"
-                        android:hint="@string/prompt_email"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/white"
-                        android:textStyle="bold" />
+                        android:layout_weight="2"
+                        app:passwordToggleEnabled="true"
+                        app:hintEnabled="false"
+                        android:layout_marginLeft="15dp">
 
-                </FrameLayout>
+
+                        <EditText
+                            android:id="@+id/et_new_pw"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:ems="10"
+                            android:hint="@string/prompt_new_password"
+                            android:inputType="textPassword"
+                            android:background="@null"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            android:textStyle="bold"/>
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:text="@string/prompt_pw"
+                    android:text="@string/prompt_cm_pw"
                     android:textStyle="bold"
                     android:layout_marginTop="15dp"
-                    android:layout_marginBottom="0dp"/>
+                    android:layout_marginBottom="10dp"/>
 
-                <FrameLayout
-                    android:layout_width="fill_parent"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:background="@drawable/editshape"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="20dp">
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:background="@drawable/editshape">
 
-                    <TextView
-                        android:id="@+id/tv_forgot1"
-                        android:layout_width="wrap_content"
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_gravity="right|center_vertical"
-                        android:textColor="@color/white"
-                        android:text="@string/forgot"
-                        android:elevation="10dp"
-                        />
+                        android:layout_weight="2"
+                        app:passwordToggleEnabled="true"
+                        app:hintEnabled="false"
+                        android:layout_marginLeft="15dp">
 
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/et_password"
-                        android:ems="10"
-                        android:hint="Password:"
-                        android:inputType="textPassword"
-                        android:background="@null"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/white"
-                        android:textStyle="bold"/>
 
-                </FrameLayout>
+                        <EditText
+                            android:id="@+id/et_confirm_pw"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:ems="10"
+                            android:hint="@string/prompt_cm_pw"
+                            android:inputType="textPassword"
+                            android:background="@null"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            android:textStyle="bold"
+                            android:imeActionId="@+id/Save"
+                            tools:ignore="InvalidImeActionId" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/login_in_button"
-                    android:text="Log In"
+                    android:id="@+id/save_button"
+                    android:text="@string/save"
                     android:textStyle="bold"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                     android:textAllCaps="false"
                     android:textColor="@color/colorPrimary"
                     android:background="@drawable/buttonshape"
-                    android:layout_marginTop="20dp"
                     android:elevation="5dp"
+                    android:layout_marginTop="25dp"
                     android:layout_marginBottom="10dp"
                     android:shadowColor="@color/colorPrimary"
                     android:shadowDx="-1"
                     android:shadowDy="-1"
                     android:shadowRadius="1"/>
 
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cancel_button"
+                    android:text="@string/cancel"
+                    android:textStyle="bold"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimary"
+                    android:background="@drawable/buttonshape"
+                    android:elevation="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:shadowColor="@color/colorPrimary"
+                    android:shadowDx="-1"
+                    android:shadowDy="-1"
+                    android:shadowRadius="1"/>
             </LinearLayout>
 
-
-            <Button
-                android:id="@+id/register_button"
-                style="@style/transparentbutton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_account"
-                android:inputType="text"
-                android:textStyle="bold"
-                android:layout_below="@+id/mainLayout"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                />
         </RelativeLayout>
 
 

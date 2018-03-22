@@ -22,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:gravity="center"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp">
 
             <ImageView
                 android:layout_width="50dp"
@@ -43,6 +44,19 @@
                 android:padding="10dp"
                 android:gravity="center"
                 android:layout_gravity="center"/>
+
+            <TextView
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SETTINGS"
+                android:id="@+id/tv_left"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:padding="10dp"
+                android:gravity="left"
+                android:layout_gravity="left"/>
 
             <TextView
                 android:visibility="gone"
@@ -129,12 +143,10 @@
         android:elevation="5dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profilePic1"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@drawable/user_75_black"
-            />
+            android:src="@drawable/user_75_black" />
 
         <ImageButton
             android:id="@+id/ib_edit"

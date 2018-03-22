@@ -86,6 +86,7 @@
             </intent-filter>
         </activity>
 
+        <!-- configChanges:orientation|screensize stops activity from restarting when flipped -->
         <activity
             android:name=".MainTabbing"
             android:theme="@style/AppTheme.NoActionBar"
@@ -153,7 +154,11 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
+        <activity
+            android:name=".ChangePassowrd"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

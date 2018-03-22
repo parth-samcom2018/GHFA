@@ -17,14 +17,17 @@
     <string name="add_user">USER +</string>
     <string name="notification_title">Notification</string>
     <string name="prompt_email">Email:</string>
-    <string name="prompt_name">USERNAME:</string>
     <string name="prompt_pw">PASSWORD:</string>
     <string name="prompt_password">Password:</string>
     <string name="prompt_cm_pw">Confirm Password:</string>
+    <string name="prompt_new_password">New Password:</string>
     <string name="tv_message">Welcome Baseball NSW!\nAs you are not yet connected to any groups, we need to get you started with your first group.</string>
     <string name="rotate">Rotate for Full Ladder </string>
     <string name="team">TEAM </string>
     <string name="score">PTS </string>
+
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 
     <string name="f_name">First Name:</string>
     <string name="l_name">Last Name:</string>
