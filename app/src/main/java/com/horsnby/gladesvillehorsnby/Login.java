@@ -61,9 +61,8 @@ public class Login extends AppCompatActivity {
 
                 if (mEmailView.getText().toString().isEmpty() && mPasswordView.getText().toString().isEmpty()){
 
-                    /*Toast toast = */Toast.makeText(Login.this, "Username and Password Missing!", Toast.LENGTH_SHORT).show();
-                    /*toast.setGravity(Gravity.CENTER,0,0);
-                    toast.show();*/
+                    Toast.makeText(Login.this, "Username and Password Missing!", Toast.LENGTH_SHORT).show();
+
                     return ;
                 }
                 attemptLogin();
