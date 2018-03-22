@@ -82,8 +82,6 @@ public class NoticeboardFragment extends Fragment {
 
         DM.hideKeyboard(this.getActivity());
 
-
-
         if(group == null)
         {
             Toast.makeText(this.getActivity(),"Must be within a group to post",Toast.LENGTH_LONG).show();
@@ -183,7 +181,6 @@ public class NoticeboardFragment extends Fragment {
     private void inviteUserAction()
     {
 
-
         final EditText edittext = new EditText(this.getContext());
         final AlertDialog.Builder alert = new AlertDialog.Builder(this.getContext());
         alert.setMessage("Please enter their email address to invite them to the group");
@@ -200,7 +197,6 @@ public class NoticeboardFragment extends Fragment {
                     Toast.makeText(getActivity(), "You must provide a valid email", Toast.LENGTH_LONG).show();
                     return;
                 }
-
 
                 makeInviteRequest(email);
 
@@ -232,9 +228,6 @@ public class NoticeboardFragment extends Fragment {
 
         inflater.inflate(R.menu.invite_user_menu, menu);
     }
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,

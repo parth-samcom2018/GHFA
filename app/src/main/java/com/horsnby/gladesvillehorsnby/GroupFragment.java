@@ -35,7 +35,7 @@ import retrofit.client.Response;
 
 public class GroupFragment extends Fragment {
 
-    public static Group group;
+    public Group group;
     private GridView gridView;
     private ArrayAdapter<Event> gridAdapter;
     private SwipeRefreshLayout refreshLayout;

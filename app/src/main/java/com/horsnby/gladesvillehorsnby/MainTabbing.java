@@ -33,6 +33,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.horsnby.gladesvillehorsnby.models.Event;
 import com.horsnby.gladesvillehorsnby.models.Group;
 import com.horsnby.gladesvillehorsnby.models.Profile;
 import com.squareup.picasso.Picasso;
@@ -65,6 +67,7 @@ public class MainTabbing extends BaseVC {
     Group g;
 
     public static Group group;
+    public static Event events;
 
     private NoticeBoardVCN noticeBoardVCN;
     private NoticeboardFragment noticeBoardVC;
@@ -144,7 +147,6 @@ public class MainTabbing extends BaseVC {
 
                 setTitle(titles[position]);
 
-
                 switch (position)
                 {
                     case 0:
@@ -168,10 +170,6 @@ public class MainTabbing extends BaseVC {
                             e.printStackTrace();
                             Log.e(TAG, "onPageSelected: "+e.getMessage());
                         }
-                       /* tvend.setVisibility(View.GONE);
-                        frmL.setVisibility(View.GONE);
-                        mTitle.setText("Groups");
-                        groupsVC.loadIfUnloaded();*/
                         break;
                     case 2:
 
@@ -217,8 +215,6 @@ public class MainTabbing extends BaseVC {
                         });
                         break;
                 }
-
-
             }
 
             @Override
@@ -233,18 +229,16 @@ public class MainTabbing extends BaseVC {
         tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-
-        //setUpIcon();
         setupTabIcons();
 
         this.noticeBoardVC = (NoticeboardFragment) NoticeboardFragment.instantiate(this, NoticeboardFragment.class.getName());
         this.noticeBoardVC.group = group;
 
         this.groupsVC = (GroupFragment) GroupFragment.instantiate(this, GroupFragment.class.getName());
-        //this.groupsVC.group = group;
+        this.groupsVC.group = group;
 
         this.eventsVC = (EventsFragment) EventsFragment.instantiate(this, EventsFragment.class.getName());
-        //this.eventsVC.event = events;
+        this.eventsVC.event = events;
 
         this.profileVC = (ProfileFragment) ProfileFragment.instantiate(this, ProfileFragment.class.getName());
         //this.profileVC.group = group;

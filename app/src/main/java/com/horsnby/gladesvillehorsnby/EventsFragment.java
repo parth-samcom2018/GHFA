@@ -31,6 +31,7 @@ import retrofit.client.Response;
 
 public class EventsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
+    public Event event;
     Group group;
     private ListView listView;
     private ArrayAdapter<Event> listAdapter;
@@ -182,13 +183,11 @@ public class EventsFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 pd.dismiss();
             }
         });
-
     }
 
     @Override
     public void onRefresh() {
         loadData();
-
     }
 
     @Override
@@ -199,10 +198,7 @@ public class EventsFragment extends Fragment implements SwipeRefreshLayout.OnRef
             loadData();
             oneShotRefresh = false;
         }
-
         super.onResume();
-
-
     }
 
 
