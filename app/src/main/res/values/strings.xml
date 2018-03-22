@@ -19,6 +19,7 @@
     <string name="prompt_email">Email:</string>
     <string name="prompt_pw">PASSWORD:</string>
     <string name="prompt_password">Password:</string>
+    <string name="prompt_old_password">Old Password:</string>
     <string name="prompt_cm_pw">Confirm Password:</string>
     <string name="prompt_new_password">New Password:</string>
     <string name="tv_message">Welcome Baseball NSW!\nAs you are not yet connected to any groups, we need to get you started with your first group.</string>

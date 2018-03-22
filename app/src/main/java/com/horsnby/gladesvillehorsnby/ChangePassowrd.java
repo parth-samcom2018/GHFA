@@ -18,7 +18,7 @@ import retrofit.client.Response;
 public class ChangePassowrd extends BaseVC{
 
     private Button savebutton,cancel_button;
-    private EditText etnewpw,etconfirmpw;
+    private EditText et_old_pw,etnewpw,etconfirmpw;
 
 
     @Override
@@ -26,11 +26,13 @@ public class ChangePassowrd extends BaseVC{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change);
 
-
+        et_old_pw = findViewById(R.id.et_old_pw);
         etnewpw = findViewById(R.id.et_new_pw);
         etconfirmpw = findViewById(R.id.et_confirm_pw);
         savebutton = findViewById(R.id.save_button);
         cancel_button = findViewById(R.id.cancel_button);
+
+        getDetails();
 
         savebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,13 +49,42 @@ public class ChangePassowrd extends BaseVC{
         });
     }
 
+    private void getDetails() {
+
+
+    }
+
+
     private void changePasswordAction() {
 
+
+        et_old_pw.setError(null);
         etnewpw.setError(null);
         etconfirmpw.setError(null);
 
+        String oldPassword = et_old_pw.getText().toString();
         String newPassword = etnewpw.getText().toString();
         String confirmPassword = etconfirmpw.getText().toString();
+
+        if (oldPassword.isEmpty()){
+            Toast toast = Toast.makeText(ChangePassowrd.this, "Old Password Missing!", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER,0,0);
+            toast.show();
+            et_old_pw.requestFocus();
+            et_old_pw.setFocusable(true);
+            DM.hideKeyboard(ChangePassowrd.this);
+            return;
+        }
+
+        if(oldPassword.isEmpty()){
+            Toast toast = Toast.makeText(ChangePassowrd.this, "Old Password Missing!", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER,0,0);
+            toast.show();
+            et_old_pw.requestFocus();
+            et_old_pw.setFocusable(true);
+            DM.hideKeyboard(ChangePassowrd.this);
+            return;
+        }
 
         if (newPassword.isEmpty()){
 
@@ -97,15 +128,12 @@ public class ChangePassowrd extends BaseVC{
             return;
         }
 
-        attemptoChange();
-    }
 
-    private void attemptoChange() {
-
-        final ChangePW changePWModel = new ChangePW();
 
         final ProgressDialog pd = DM.getPD(ChangePassowrd.this, "Loading for Changing Password...");
         pd.show();
+
+        final ChangePW changePWModel = new ChangePW();
 
         DM.getApi().postNewPassword(DM.getAuthString(), changePWModel, new Callback<Response>() {
             @Override
@@ -127,6 +155,7 @@ public class ChangePassowrd extends BaseVC{
             }
         });
     }
+
 
 
 }
