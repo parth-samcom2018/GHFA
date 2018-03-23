@@ -59,9 +59,11 @@ public interface API {
                          Callback<Response> callback);
 
     @FormUrlEncoded
-    @POST("/apiv2/account/setpassword")
+    @POST("/apiv2/account/changepassword")
     public void postNewPassword(@Header("Authorization")String auth,
-                                @Body ChangePW changePWModel,
+                                @Field("oldPassword") String oldPassword,
+                                @Field("newPassword") String newPassword,
+                                @Field("confirmPassword") String confirmPassword,
                                 Callback<Response> callback);
 
     //new api v2

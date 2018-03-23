@@ -63,6 +63,7 @@ public class Registration extends BaseVC {
     static final int REQUEST_TAKE_PHOTO = 1;
     static final int REQUEST_PICK_IMAGE = 2;
 
+    public static final String MYPref = "Pref";
     public static final String ALLOW_KEY = "ALLOWED";
     public static final String CAMERA_PREF = "camera_pref";
     String email1;
@@ -91,7 +92,7 @@ public class Registration extends BaseVC {
     private Spinner countrySpinner;
     private EditText postCodeET;
     private Button chooseCountryButton;
-
+    SharedPreferences sPref;
     private Switch termsSwitch;
 
     @Override
@@ -100,6 +101,7 @@ public class Registration extends BaseVC {
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_register);
 
+        sPref = getSharedPreferences(MYPref, MODE_PRIVATE);
 
         emailET = findViewById(R.id.email);
         passwordET = findViewById(R.id.password);
@@ -423,6 +425,11 @@ public class Registration extends BaseVC {
                         String name = "Gladesville Horsnby";
                         registerModel.GroupName = name;
                         makeRegistrationRequest(registerModel);
+
+                        SharedPreferences preferences = getSharedPreferences(MYPref, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("autoSave", passwordConfirmET.getText().toString());
+                        editor.apply();
                     }
                 }
 

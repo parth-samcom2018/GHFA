@@ -13,11 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/empty"
-        android:src="@drawable/noticeboard_empty"
-        android:visibility="gone"
-        android:scaleType="fitCenter"
-        android:padding="10dp"
-        android:layout_margin="10dp"/>
+        android:src="@drawable/noticeboard_empty_ghfa"
+        android:visibility="gone" />
+
 
     <ScrollView
         android:layout_width="match_parent"

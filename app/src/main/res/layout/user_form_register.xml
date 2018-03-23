@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Register"
+    tools:context=".Registration"
     android:background="@color/white_slight_transparent"
     android:id="@+id/rl_main">
 
@@ -186,6 +186,7 @@
                     android:layout_weight="1"
                     android:layout_margin="15dp"
                     android:textColorHint="@color/black">
+
                     <EditText
                         android:id="@+id/firstNameET"
                         android:layout_width="match_parent"
@@ -201,8 +202,7 @@
                         android:imeOptions="actionNext"
                         android:fontFamily="@font/lato_regular"
                         android:textColorHint="@color/black"
-                        android:textColor="@color/black"
-                        />
+                        android:textColor="@color/black"/>
                 </android.support.design.widget.TextInputLayout>
 
 
@@ -218,9 +218,9 @@
                         android:id="@+id/surnameET"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/l_name"
-                        android:background="@null"
+                        android:hint="@string/f_name"
                         android:inputType="text"
+                        android:background="@null"
                         android:maxLines="1"
                         android:textSize="16sp"
                         android:singleLine="true"

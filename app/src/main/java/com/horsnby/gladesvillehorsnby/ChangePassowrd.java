@@ -1,6 +1,7 @@
 package com.horsnby.gladesvillehorsnby;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -19,12 +20,16 @@ public class ChangePassowrd extends BaseVC{
 
     private Button savebutton,cancel_button;
     private EditText et_old_pw,etnewpw,etconfirmpw;
-
+    SharedPreferences pref;
+    public static final String MYPref = "Pref";
+    String getData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change);
+
+        pref = getSharedPreferences(MYPref, MODE_PRIVATE);
 
         et_old_pw = findViewById(R.id.et_old_pw);
         etnewpw = findViewById(R.id.et_new_pw);
@@ -32,7 +37,6 @@ public class ChangePassowrd extends BaseVC{
         savebutton = findViewById(R.id.save_button);
         cancel_button = findViewById(R.id.cancel_button);
 
-        getDetails();
 
         savebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,9 +53,21 @@ public class ChangePassowrd extends BaseVC{
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getDetails();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getDetails();
+    }
+
     private void getDetails() {
 
-
+        et_old_pw.setText(pref.getString("autoSave", ""));
     }
 
 
@@ -133,9 +149,8 @@ public class ChangePassowrd extends BaseVC{
         final ProgressDialog pd = DM.getPD(ChangePassowrd.this, "Loading for Changing Password...");
         pd.show();
 
-        final ChangePW changePWModel = new ChangePW();
 
-        DM.getApi().postNewPassword(DM.getAuthString(), changePWModel, new Callback<Response>() {
+        DM.getApi().postNewPassword(DM.getAuthString(), oldPassword,newPassword,confirmPassword , new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
                 Toast toast = Toast.makeText(ChangePassowrd.this, "New password Changed!", Toast.LENGTH_SHORT);
@@ -143,6 +158,8 @@ public class ChangePassowrd extends BaseVC{
                 toast.show();
                 pd.dismiss();
                 DM.hideKeyboard(ChangePassowrd.this);
+
+                finish();
             }
 
             @Override
