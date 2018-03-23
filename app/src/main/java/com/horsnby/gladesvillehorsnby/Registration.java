@@ -28,6 +28,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -45,6 +47,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Vector;
@@ -57,7 +61,7 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedFile;
 
-public class Registration extends BaseVC {
+public class Registration extends BaseVC implements AdapterView.OnItemClickListener{
 
 
     static final int REQUEST_TAKE_PHOTO = 1;
@@ -89,11 +93,13 @@ public class Registration extends BaseVC {
     private RadioButton buttonSG2;
     private EditText birthYearET;
     private EditText countryET;
-    private Spinner countrySpinner;
+
     private EditText postCodeET;
     private Button chooseCountryButton;
     SharedPreferences sPref;
     private Switch termsSwitch;
+
+    String[] country = { "Select Country","India", "USA", "China", "Japan", "Other",  };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,21 +137,30 @@ public class Registration extends BaseVC {
 
         birthYearET = findViewById(R.id.birthYearET);
         countryET = findViewById(R.id.countryET);
+        Spinner spin = findViewById(R.id.spinner1);
+
+        Locale[] locales = Locale.getAvailableLocales();
+        ArrayList<String> countries = new ArrayList<String>();
+        for (Locale locale : locales) {
+            String country = locale.getDisplayCountry();
+            if (country.trim().length() > 0 && !countries.contains(country)) {
+                countries.add(country);
+            }
+        }
+        Collections.sort(countries);
+        for (String country : countries) {
+            System.out.println(country);
+        }
+
+        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,countries);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        spin.setAdapter(aa);
 
         //countryET.setEnabled(false);
 
-        countryET.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chooseCountryAction();
-            }
-        });
+
         chooseCountryButton = findViewById(R.id.chooseCountryButton);
-        chooseCountryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseCountryAction();}
-        });
 
         postCodeET = findViewById(R.id.postCodeET);
 
@@ -213,29 +228,6 @@ public class Registration extends BaseVC {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    private void chooseCountryAction()
-    {
-        String[] isoCountryCodes = Locale.getISOCountries();
-        Vector<String> countries = new Vector<String>();
-        for (String countryCode : isoCountryCodes) {
-            Locale locale = new Locale("", countryCode);
-            String countryName = locale.getDisplayCountry();
-            countries.add(countryName);
-        }
-
-        AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setTitle("Choose Country");
-        final String[] a = countries.toArray(new String[countries.size()]);
-
-        b.setItems(a, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                countryET.setText(a[which]);
-            }
-        });
-
-        b.show();
-    }
 
 
     private boolean switchOn = false;
@@ -710,4 +702,9 @@ public class Registration extends BaseVC {
         return false;
     }
 
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Toast.makeText(this, country[i], Toast.LENGTH_SHORT).show();
+    }
 }

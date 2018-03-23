@@ -101,6 +101,7 @@
                         android:inputType="text"
                         android:background="@null"
                         android:maxLines="1"
+                        android:padding="5dp"
                         android:textSize="16sp"
                         android:singleLine="true"
                         android:focusable="true"
@@ -133,6 +134,7 @@
                         android:textSize="16sp"
                         android:singleLine="true"
                         android:focusable="true"
+                        android:padding="5dp"
                         android:focusableInTouchMode="true"
                         android:imeOptions="actionNext"
                         android:fontFamily="@font/lato_regular"
@@ -162,6 +164,7 @@
                         android:textSize="16sp"
                         android:singleLine="true"
                         android:focusable="true"
+                        android:padding="5dp"
                         android:focusableInTouchMode="true"
                         android:imeOptions="actionNext"
                         tools:ignore="InvalidImeActionId,TextFields"
@@ -197,6 +200,7 @@
                         android:maxLines="1"
                         android:textSize="16sp"
                         android:singleLine="true"
+                        android:padding="5dp"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:imeOptions="actionNext"
@@ -218,9 +222,10 @@
                         android:id="@+id/surnameET"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/f_name"
+                        android:hint="@string/l_name"
                         android:inputType="text"
                         android:background="@null"
+                        android:padding="5dp"
                         android:maxLines="1"
                         android:textSize="16sp"
                         android:singleLine="true"
@@ -296,6 +301,7 @@
                         android:background="@null"
                         android:textSize="16sp"
                         android:singleLine="true"
+                        android:padding="5dp"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:imeOptions="actionNext"
@@ -313,11 +319,27 @@
                     android:textColorHint="@color/black">
 
                     <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/country_drop"
+                        android:weightSum="1">
+
+                        <Spinner
+                            android:id="@+id/spinner1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:weightSum="1"
-                        android:id="@+id/ll_country_register">
+                        android:id="@+id/ll_country_register"
+                        android:visibility="gone">
 
 
                         <EditText
@@ -332,6 +354,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:maxLines="4"
+                            android:padding="5dp"
                             android:singleLine="true"
                             android:textSize="16sp"
                             android:fontFamily="@font/lato_regular"
