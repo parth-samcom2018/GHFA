@@ -279,7 +279,7 @@ public class NoticeboardFragment extends Fragment {
 
                 //Text or image...
                 if (n.notificationTypeId == Notification.TYPE_MEDIA) {
-                    convertView = LayoutInflater.from(NoticeboardFragment.this.getContext()).inflate(R.layout.main_image_cell, parent, false);
+                    convertView = LayoutInflater.from(NoticeboardFragment.this.getActivity()).inflate(R.layout.main_image_cell, parent, false);
 
                     iv = convertView.findViewById(R.id.bodyIV);
 
