@@ -33,6 +33,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -70,7 +71,6 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
     public static final String MYPref = "Pref";
     public static final String ALLOW_KEY = "ALLOWED";
     public static final String CAMERA_PREF = "camera_pref";
-    String email1;
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 100;
@@ -81,7 +81,6 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
 
     //VIEWS
     private CircleImageView profileIV;
-    private Button chooseImageButton;
 
     private EditText emailET;
     private EditText passwordET;
@@ -93,9 +92,9 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
     private RadioButton buttonSG2;
     private EditText birthYearET;
     private EditText countryET;
+    private ImageButton ib_down;
 
     private EditText postCodeET;
-    private Button chooseCountryButton;
     SharedPreferences sPref;
     private Switch termsSwitch;
 
@@ -134,33 +133,25 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
             }
         });
 
-
         birthYearET = findViewById(R.id.birthYearET);
         countryET = findViewById(R.id.countryET);
-        Spinner spin = findViewById(R.id.spinner1);
+        ib_down = findViewById(R.id.ib_down);
 
-        Locale[] locales = Locale.getAvailableLocales();
-        ArrayList<String> countries = new ArrayList<String>();
-        for (Locale locale : locales) {
-            String country = locale.getDisplayCountry();
-            if (country.trim().length() > 0 && !countries.contains(country)) {
-                countries.add(country);
+        ib_down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chooseCountryAction();
             }
-        }
-        Collections.sort(countries);
-        for (String country : countries) {
-            System.out.println(country);
-        }
-
-        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,countries);
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Setting the ArrayAdapter data on the Spinner
-        spin.setAdapter(aa);
+        });
 
         //countryET.setEnabled(false);
+        countryET.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chooseCountryAction();
+            }
+        });
 
-
-        chooseCountryButton = findViewById(R.id.chooseCountryButton);
 
         postCodeET = findViewById(R.id.postCodeET);
 
@@ -228,7 +219,29 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    private void chooseCountryAction()
+    {
+        String[] isoCountryCodes = Locale.getISOCountries();
+        Vector<String> countries = new Vector<String>();
+        for (String countryCode : isoCountryCodes) {
+            Locale locale = new Locale("", countryCode);
+            String countryName = locale.getDisplayCountry();
+            countries.add(countryName);
+        }
 
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        b.setTitle("Choose Country");
+        final String[] a = countries.toArray(new String[countries.size()]);
+
+        b.setItems(a, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                countryET.setText(a[which]);
+            }
+        });
+
+        b.show();
+    }
 
     private boolean switchOn = false;
 

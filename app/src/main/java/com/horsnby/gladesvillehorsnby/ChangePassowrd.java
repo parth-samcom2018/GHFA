@@ -1,6 +1,7 @@
 package com.horsnby.gladesvillehorsnby;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -160,6 +161,11 @@ public class ChangePassowrd extends BaseVC{
                 DM.hideKeyboard(ChangePassowrd.this);
 
                 finish();
+
+                SharedPreferences preferences = getSharedPreferences(MYPref, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("autoSave", etconfirmpw.getText().toString());
+                editor.apply();
             }
 
             @Override
