@@ -31,7 +31,7 @@
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_gravity="center"
-                android:src="@drawable/user_75_black"
+                android:src="@drawable/user_black"
                 android:background="@drawable/shape_user"
                 android:scaleType="center"
                 android:elevation="5dp"

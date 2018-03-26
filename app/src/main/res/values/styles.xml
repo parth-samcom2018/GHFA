@@ -74,7 +74,7 @@
     </style>
 
     <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">6sp</item>
+        <item name="android:textSize">10sp</item>
     </style>
 
     <style name="textview_normal" parent="@android:style/Widget.TextView">
