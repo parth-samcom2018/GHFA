@@ -77,12 +77,9 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
     private ImageView emptyIV;
     private TextView tv_media_main;
 
-
     public MediaVC() {
         // Required empty public constructor
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -173,13 +170,11 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                             public void onError() {
                                 tv_media.setVisibility(View.GONE);
                                 progressBar.setVisibility(View.GONE);
-                                //progressBar1.setVisibility(View.GONE);
 
                                 showiv.setImageResource(R.drawable.icon);
                                 showiv.setScaleType(ImageView.ScaleType.CENTER);
                             }
                         });
-
 
                         showiv.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -198,33 +193,15 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                         });
                     }
 
-
                 }
-
-
-
 
                 TextView firstTV = convertView.findViewById(R.id.firstTV);
                 firstTV.setText(album.name+" \n" +album.mediaModels.size()+" photos");
                 firstTV.setTextColor(getResources().getColor(R.color.white));
 
 
-
                 Button flagButton = convertView.findViewById(R.id.flagButton);
                 flagButton.setOnClickListener(DM.getFlagOnClickListener(MediaVC.this.getActivity()));
-
-
-                /*convertView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        MediaDetailVC.mediaAlbum = album;
-                        Intent i = new Intent(getActivity(), MediaDetailVC.class);
-                        startActivity(i);
-
-                    }
-                });*/
-
 
                 return convertView;
             }
@@ -244,8 +221,6 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
             }
         });
 
-
-
         View cameraButton = v.findViewById(R.id.cameraIV);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,11 +228,8 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
 
 
                 if (checkpermission()==true){
-
-
                     cameraAction();
                 }
-                //showAlert();
                 checkpermission();
             }
         });
@@ -304,18 +276,12 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
     }
 
 
-
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
 
         inflater.inflate(R.menu.create_album_menu, menu);
     }
-
-
-
-
 
 
     private void cameraAction() {
@@ -365,7 +331,6 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                     }
                 }
             }
-
         }
     }
 

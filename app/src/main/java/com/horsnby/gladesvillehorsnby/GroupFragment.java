@@ -132,11 +132,17 @@ public class GroupFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Group g = groups.get(position);
-                GroupVC.group = g;
-                Intent i = new Intent(GroupFragment.this.getActivity(), GroupVC.class);
-                startActivity(i);
-                //   getActivity().overridePendingTransition(android.R.anim.slide_out_right,android.R.anim.slide_in_left);
+                try {
+                    Group g = groups.get(position);
+                    GroupVC.group = g;
+                    Intent i = new Intent(GroupFragment.this.getActivity(), GroupVC.class);
+                    startActivity(i);
+                }
+                catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+
+
             }
         });
 

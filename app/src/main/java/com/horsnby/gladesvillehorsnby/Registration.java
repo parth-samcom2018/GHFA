@@ -152,7 +152,6 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
             }
         });
 
-
         postCodeET = findViewById(R.id.postCodeET);
 
         postCodeET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -177,12 +176,10 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
             }
         });
 
-
         Button registerButton = findViewById(R.id.register_button);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 showAlert();
             }
         });
@@ -203,16 +200,13 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
             }
         });
 
-
         termsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 switchOn = isChecked;
             }
         });
-
     }
-
 
     private void hideKeyBoard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -258,8 +252,6 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
         birthYearET.setError(null);
         countryET.setError(null);
 
-
-
         // Store values at the time of the login attempt.
         final String email = emailET.getText().toString();
         String password = passwordET.getText().toString();
@@ -301,15 +293,12 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
             return;
         }
 
-
         if (password.length()<6){
             passwordET.requestFocus();
             passwordET.setFocusable(true);
             Toast.makeText(this, "Password is too Short! Atleast 6 character required", Toast.LENGTH_SHORT).show();
             return;
         }
-
-
 
         if (TextUtils.isEmpty(passwordConfirm)){
             Toast.makeText(this,"Enter Confirm Password", Toast.LENGTH_LONG).show();
@@ -362,7 +351,6 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
             return;
         }
 
-
         if (TextUtils.isEmpty(postCode)){
             Toast.makeText(this,"Enter PostCode without using + character", Toast.LENGTH_LONG).show();
             postCodeET.requestFocus();
@@ -387,16 +375,12 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
         {
             int selectedId = genderSG.getCheckedRadioButtonId();
             buttonSG1 = findViewById(selectedId);
-            //Toast.makeText(getApplicationContext(), buttonSG1.getText().toString()+" is selected", Toast.LENGTH_SHORT).show();
-
         }
-
 
         if (cancel) {
 
             focusView.requestFocus();
         } else {
-
 
             final Register registerModel = new Register();
             registerModel.email = email;
@@ -427,7 +411,8 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
                         makeRegistrationRequest(registerModel);
                     } else {
 
-                        String name = "Gladesville Horsnby";
+                        String name = "Gladeville Horsnby";
+
                         registerModel.GroupName = name;
                         makeRegistrationRequest(registerModel);
 
@@ -443,9 +428,7 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
                     Toast.makeText(Registration.this, "could not check groups", Toast.LENGTH_LONG).show();
                 }
             });
-
         }
-
     }
 
 
@@ -462,13 +445,11 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
                 DM.hideKeyboard(Registration.this);
                 pd.dismiss();
 
-
                 //triggers auto login
                 Login.justRegisteredUsername = registerModel.email;
                 Login.justRegisteredPassword = registerModel.password;
 
                 finish();
-
             }
 
             @Override
@@ -478,7 +459,6 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
 
                 String s =  new String(((TypedByteArray)error.getResponse().getBody()).getBytes());
                 Log.d("HQ",s);
-
 
                 if(s.contains("already in use"))
                 {
@@ -490,9 +470,6 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
 
                     Toast.makeText(Registration.this, "Registration failed: "+error.getMessage(), Toast.LENGTH_LONG).show();
                 }
-
-
-
             }
         });
 
@@ -535,10 +512,8 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
         }
 
         else {
-
             registerAction1();
         }
-
     }
 
 

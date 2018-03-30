@@ -36,6 +36,7 @@ public class LaddersVC extends Fragment implements SwipeRefreshLayout.OnRefreshL
     private ArrayAdapter<Ladders> listadapter;
     private SwipeRefreshLayout refreshLayout;
     private TextView emptyIV;
+    private LinearLayout llfirst,llsecond;
 
 
     private List<Ladders> ladders = new Vector<Ladders>();
@@ -56,7 +57,10 @@ public class LaddersVC extends Fragment implements SwipeRefreshLayout.OnRefreshL
         if(this.isVisible())pd.show();
 
         listView = v.findViewById(R.id.list);
-        listView.setDividerHeight(0);
+        llfirst = v.findViewById(R.id.ll_first);
+        llsecond = v.findViewById(R.id.ll_second);
+        llfirst.setVisibility(View.VISIBLE);
+        llsecond.setVisibility(View.VISIBLE);
 
         listadapter= new ArrayAdapter<Ladders>(this.getActivity(), R.layout.ladder_cell){
 
@@ -149,14 +153,21 @@ public class LaddersVC extends Fragment implements SwipeRefreshLayout.OnRefreshL
             @Override
             public void success(LaddersResponse gs, Response response) {
 
+                if(gs.getData().size()==0) {
+                    emptyIV.setVisibility(View.VISIBLE);
+                    llfirst.setVisibility(View.GONE);
+                    llsecond.setVisibility(View.GONE);
+                }
+                else {
+                    emptyIV.setVisibility(View.GONE);
+                    llfirst.setVisibility(View.VISIBLE);
+                    llsecond.setVisibility(View.VISIBLE);
 
-                ladders = gs.getData();
-                listadapter.notifyDataSetChanged();
-                refreshLayout.setRefreshing(false);
-                pd.dismiss();
-
-                if(gs.getData().size()==0) emptyIV.setVisibility(View.VISIBLE);
-                else emptyIV.setVisibility(View.GONE);
+                    ladders = gs.getData();
+                    listadapter.notifyDataSetChanged();
+                    refreshLayout.setRefreshing(false);
+                    pd.dismiss();
+                }
 
             }
 
