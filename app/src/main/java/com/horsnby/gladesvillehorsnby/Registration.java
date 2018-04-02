@@ -31,6 +31,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -206,6 +207,7 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
                 switchOn = isChecked;
             }
         });
+
     }
 
     private void hideKeyBoard(View view) {
@@ -411,10 +413,46 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
                         makeRegistrationRequest(registerModel);
                     } else {
 
-                        String name = "Gladeville Horsnby";
+                        final Dialog dialog = new Dialog(Registration.this);
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialog.setCancelable(true);
+                        dialog.setContentView(R.layout.custom_dialogbox_register);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+                        final CheckBox checkBox = dialog.findViewById(R.id.cb1);
+
+                        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
+                                if (isCheck){
+                                    checkBox.setChecked(true);
+                                }
+                            }
+                        });
+
+                        Button dialogBtn_done = dialog.findViewById(R.id.btn_dialog);
+                        dialogBtn_done.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                String name = checkBox.getText().toString();
+                                if (name.isEmpty()) {
+                                    Toast.makeText(Registration.this, "You must provide a name", Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+
+                                registerModel.GroupName = name;
+                                makeRegistrationRequest(registerModel);
+                                dialog.dismiss();
+                            }
+                        });
+
+
+                        dialog.show();
+                        /*String name = "Gladeville Horsnby";
 
                         registerModel.GroupName = name;
-                        makeRegistrationRequest(registerModel);
+                        makeRegistrationRequest(registerModel);*/
 
                         SharedPreferences preferences = getSharedPreferences(MYPref, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();

@@ -9,7 +9,7 @@
         android:id="@+id/tvHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Welcome to Sport Club HQ"
+        android:text="Select Clubs"
         android:background="@color/colorPrimary"
         android:padding="20dp"
         android:gravity="center"
@@ -18,80 +18,63 @@
         android:fontFamily="@font/lato_regular"
         />
 
-    <TextView
-        android:id="@+id/tvTextTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Enter Group Name"
-        android:layout_below="@+id/tvHeading"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="15dp"
-        android:textColor="@color/black"
-        android:textStyle="normal"
-        android:textSize="16sp"
-        android:fontFamily="@font/lato_semibold"
-        />
+        <CheckBox
+            android:id="@+id/cb1"
+            android:layout_below="@+id/tvHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sports Club HQ"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            android:padding="10dp"
+            android:fontFamily="@font/lato_regular"/>
 
+        <CheckBox
+            android:id="@+id/cb2"
+            android:layout_below="@+id/cb1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_regular"
+            android:text="HQ Team"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textStyle="normal" />
 
-    <TextView
-        android:id="@+id/tvMessage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/tv_message"
-        android:layout_below="@+id/tvTextTitle"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:textColor="@color/dark_gray"
-        android:singleLine="false"
-        android:lines="5"
-        android:textStyle="normal"
-        android:fontFamily="@font/lato_italic"
-        android:textSize="14sp"/>
+        <CheckBox
+            android:id="@+id/cb3"
+            android:layout_below="@+id/cb2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gold Coast Rugby League"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            android:padding="10dp"
+            android:fontFamily="@font/lato_regular"/>
 
-
+        <CheckBox
+            android:layout_below="@+id/cb3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HQN Board"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            android:fontFamily="@font/lato_regular"/>
 
 
     <Button
         android:id="@+id/btn_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Done"
-        android:background="@android:color/transparent"
-        android:textColor="@color/colorPrimary"
+        android:text="Next"
+        android:background="@drawable/roundedbutton"
+        android:textColor="@color/white"
+        android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginBottom="15dp"/>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="@color/black"
-        android:layout_below="@id/tvMessage"
-        android:id="@+id/inputtextGroupName"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp">
 
-        <EditText
-            android:id="@+id/etName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/inputtextGroupName"
-            android:layout_alignTop="@+id/inputtextGroupName"
-            android:backgroundTint="@android:color/transparent"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:fontFamily="@font/lato_regular"
-            android:hint="Enter Group Name"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:maxLines="1"
-            android:nextFocusDown="@+id/password"
-            android:nextFocusForward="@+id/password"
-            android:singleLine="true"
-            android:layout_alignLeft="@+id/inputtextGroupName" />
-
-    </android.support.design.widget.TextInputLayout>
 
 </RelativeLayout>

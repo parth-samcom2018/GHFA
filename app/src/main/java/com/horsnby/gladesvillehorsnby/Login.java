@@ -107,7 +107,7 @@ public class Login extends BaseVC {
         final Dialog dialog = new Dialog(Login.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
-        dialog.setContentView(R.layout.custom_dialogbox_register);
+        dialog.setContentView(R.layout.custom_dialogbox_forgot);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         final EditText etEmail = dialog.findViewById(R.id.etName);
