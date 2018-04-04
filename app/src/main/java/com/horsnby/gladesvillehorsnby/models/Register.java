@@ -12,6 +12,6 @@ public class Register {
     public String country;
     public String postCode;
     public String birthYear;
-    public String GroupName;
-
+    public String groupName;
+    public int groupId;
 }

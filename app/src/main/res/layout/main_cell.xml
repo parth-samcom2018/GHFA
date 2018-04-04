@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:text="Second row of text"
             style="@style/textview_normal"
-            android:singleLine="true"
+            android:singleLine="false"
             android:gravity="center_vertical"
             android:layout_weight="1"/>
 

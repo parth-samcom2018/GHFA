@@ -191,8 +191,7 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //showAlert();
-                registerAction();
+                showAlert();
             }
         });
 
@@ -403,7 +402,7 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
             registerModel.surname = surnameET.getText().toString();
 
             registerModel.gender = "U"; //unknown
-            int checkedID = genderSG.getCheckedRadioButtonId();
+            final int checkedID = genderSG.getCheckedRadioButtonId();
 
 
             if (buttonSG1.getId() == checkedID) registerModel.gender = "M";
@@ -429,6 +428,97 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
 
                         registerModel.GroupName = name;
                         makeRegistrationRequest(registerModel);*/
+
+                        final Dialog dialog = new Dialog(Registration.this);
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialog.setCancelable(true);
+                        dialog.setContentView(R.layout.custom_dialogbox_register);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+                        listView = dialog.findViewById(R.id.list);
+                        final Button btn_dialog = dialog.findViewById(R.id.btn_dialog);
+
+                        listAdapter = new ArrayAdapter<ClubNames>(Registration.this, R.layout.club_one) {
+
+
+                            @SuppressLint("ClickableViewAccessibility")
+                            @Override
+                            public View getView(final int position, View convertView, ViewGroup parent) {
+
+                                if (convertView == null) {
+                                    convertView = LayoutInflater.from(Registration.this).inflate(R.layout.club_one, parent, false);
+                                }
+
+                                ClubNames e = clubNames.get(position);
+
+                                cbItem = convertView.findViewById(R.id.cb1);
+                                cbItem.setText(e.groupName);
+                                cbItem.setChecked(false);
+                                cbItem.setOnTouchListener(new View.OnTouchListener() {
+                                    @Override
+                                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                                        cbItem.setChecked(false);
+                                        return false;
+                                    }
+                                });
+
+                                cbItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                    @Override
+                                    public void onCheckedChanged(CompoundButton compoundButton, boolean ischeck) {
+                                        String name = cbItem.getText().toString();
+
+                                        if (cbItem.isChecked()){
+                                            cbItem.setChecked(true);
+                                            Toast.makeText(Registration.this, "" + position, Toast.LENGTH_SHORT).show();
+                                            registerModel.groupName = name;
+                                            registerModel.groupId = position;
+                                        }
+                                        if (!cbItem.isChecked()){
+                                            btn_dialog.setClickable(false);
+                                        }
+                                    }
+                                });
+                                return convertView;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return clubNames.size();
+                            }
+                        };
+                        listView.setAdapter(listAdapter);
+
+                        btn_dialog.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (cbItem.isChecked()){
+                                    cbItem.setChecked(true);
+                                    String name = cbItem.getText().toString();
+                                    registerModel.groupName = name;
+                                    registerModel.groupId = cbItem.getId();
+                                    makeRegistrationRequest(registerModel);
+                                }
+                            }
+                        });
+
+                        final ProgressDialog pd = DM.getPD(Registration.this,"Loading Clubs...");
+                        pd.show();
+
+                        DM.getApi().getClubNames(new Callback<ClubResponse>() {
+                            @Override
+                            public void success(ClubResponse clubResponse, Response response) {
+                                clubNames = clubResponse.getData();
+                                listAdapter.notifyDataSetChanged();
+                                pd.dismiss();
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                pd.dismiss();
+                            }
+                        });
+
+                        dialog.show();
 
                         SharedPreferences preferences = getSharedPreferences(MYPref, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
@@ -526,100 +616,9 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
         }
 
         else {
-            //registerAction1();
-            registerAction();
+            registerAction1();
         }
     }
-
-    private void registerAction() {
-
-
-        final Dialog dialog = new Dialog(Registration.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.custom_dialogbox_register);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-        listView = dialog.findViewById(R.id.list);
-        Button btn_dialog = dialog.findViewById(R.id.btn_dialog);
-
-        listAdapter = new ArrayAdapter<ClubNames>(this, R.layout.club_one) {
-
-
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public View getView(final int position, View convertView, ViewGroup parent) {
-
-                if (convertView == null) {
-                    convertView = LayoutInflater.from(Registration.this).inflate(R.layout.club_one, parent, false);
-                }
-
-                ClubNames e = clubNames.get(position);
-
-                cbItem = convertView.findViewById(R.id.cb1);
-                cbItem.setText(e.groupName);
-                cbItem.setChecked(false);
-                cbItem.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        cbItem.setChecked(false);
-                        return false;
-                    }
-                });
-
-                cbItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean ischeck) {
-
-
-                        if (cbItem.isChecked()){
-                            cbItem.setChecked(true);
-                            Toast.makeText(Registration.this, "" + position, Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                });
-                return convertView;
-            }
-
-            @Override
-            public int getCount() {
-                return clubNames.size();
-            }
-        };
-        listView.setAdapter(listAdapter);
-
-        btn_dialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!cbItem.isChecked()){
-                    Toast.makeText(Registration.this, "Select any club please!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-            }
-        });
-
-        final ProgressDialog pd = DM.getPD(this,"Loading Clubs...");
-        pd.show();
-
-        DM.getApi().getClubNames(new Callback<ClubResponse>() {
-            @Override
-            public void success(ClubResponse clubResponse, Response response) {
-                clubNames = clubResponse.getData();
-                listAdapter.notifyDataSetChanged();
-                pd.dismiss();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                pd.dismiss();
-            }
-        });
-
-        dialog.show();
-    }
-
 
     public static void saveToPreferences(Context context, String key,
                                          Boolean allowed) {
