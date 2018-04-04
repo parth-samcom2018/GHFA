@@ -1,6 +1,7 @@
 package com.horsnby.gladesvillehorsnby;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,13 +18,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -35,13 +37,16 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.horsnby.gladesvillehorsnby.models.ClubNames;
+import com.horsnby.gladesvillehorsnby.models.ClubResponse;
+import com.horsnby.gladesvillehorsnby.models.Event;
 import com.horsnby.gladesvillehorsnby.models.Register;
 
 import java.io.ByteArrayOutputStream;
@@ -49,9 +54,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
@@ -66,6 +70,11 @@ import retrofit.mime.TypedFile;
 public class Registration extends BaseVC implements AdapterView.OnItemClickListener{
 
 
+    private ListView listView;
+    private ArrayAdapter<ClubNames> listAdapter;
+    //MODELS
+    private List<ClubNames> clubNames = new Vector<ClubNames>(); //empty
+
     static final int REQUEST_TAKE_PHOTO = 1;
     static final int REQUEST_PICK_IMAGE = 2;
 
@@ -79,7 +88,7 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
     private static final int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 100;
 
     boolean isSelected;
-
+    private CheckBox cbItem;
     //VIEWS
     private CircleImageView profileIV;
 
@@ -100,6 +109,7 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
     private Switch termsSwitch;
 
     String[] country = { "Select Country","India", "USA", "China", "Japan", "Other",  };
+    private Object data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +191,8 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAlert();
+                //showAlert();
+                registerAction();
             }
         });
 
@@ -413,43 +424,8 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
                         makeRegistrationRequest(registerModel);
                     } else {
 
-                        final Dialog dialog = new Dialog(Registration.this);
-                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.setCancelable(true);
-                        dialog.setContentView(R.layout.custom_dialogbox_register);
-                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-                        final CheckBox checkBox = dialog.findViewById(R.id.cb1);
-
-                        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
-                                if (isCheck){
-                                    checkBox.setChecked(true);
-                                }
-                            }
-                        });
-
-                        Button dialogBtn_done = dialog.findViewById(R.id.btn_dialog);
-                        dialogBtn_done.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                String name = checkBox.getText().toString();
-                                if (name.isEmpty()) {
-                                    Toast.makeText(Registration.this, "You must provide a name", Toast.LENGTH_LONG).show();
-                                    return;
-                                }
-
-                                registerModel.GroupName = name;
-                                makeRegistrationRequest(registerModel);
-                                dialog.dismiss();
-                            }
-                        });
-
-
-                        dialog.show();
-                        /*String name = "Gladeville Horsnby";
+                        /*String name = "GLadesville Hornsby";
 
                         registerModel.GroupName = name;
                         makeRegistrationRequest(registerModel);*/
@@ -550,8 +526,98 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
         }
 
         else {
-            registerAction1();
+            //registerAction1();
+            registerAction();
         }
+    }
+
+    private void registerAction() {
+
+
+        final Dialog dialog = new Dialog(Registration.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.custom_dialogbox_register);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        listView = dialog.findViewById(R.id.list);
+        Button btn_dialog = dialog.findViewById(R.id.btn_dialog);
+
+        listAdapter = new ArrayAdapter<ClubNames>(this, R.layout.club_one) {
+
+
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public View getView(final int position, View convertView, ViewGroup parent) {
+
+                if (convertView == null) {
+                    convertView = LayoutInflater.from(Registration.this).inflate(R.layout.club_one, parent, false);
+                }
+
+                ClubNames e = clubNames.get(position);
+
+                cbItem = convertView.findViewById(R.id.cb1);
+                cbItem.setText(e.groupName);
+                cbItem.setChecked(false);
+                cbItem.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        cbItem.setChecked(false);
+                        return false;
+                    }
+                });
+
+                cbItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean ischeck) {
+
+
+                        if (cbItem.isChecked()){
+                            cbItem.setChecked(true);
+                            Toast.makeText(Registration.this, "" + position, Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+                return convertView;
+            }
+
+            @Override
+            public int getCount() {
+                return clubNames.size();
+            }
+        };
+        listView.setAdapter(listAdapter);
+
+        btn_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!cbItem.isChecked()){
+                    Toast.makeText(Registration.this, "Select any club please!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+            }
+        });
+
+        final ProgressDialog pd = DM.getPD(this,"Loading Clubs...");
+        pd.show();
+
+        DM.getApi().getClubNames(new Callback<ClubResponse>() {
+            @Override
+            public void success(ClubResponse clubResponse, Response response) {
+                clubNames = clubResponse.getData();
+                listAdapter.notifyDataSetChanged();
+                pd.dismiss();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                pd.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
 
@@ -733,4 +799,6 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Toast.makeText(this, country[i], Toast.LENGTH_SHORT).show();
     }
+
+
 }

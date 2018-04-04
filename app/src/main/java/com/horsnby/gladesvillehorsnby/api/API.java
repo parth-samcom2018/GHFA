@@ -4,7 +4,8 @@ package com.horsnby.gladesvillehorsnby.api;
 import com.horsnby.gladesvillehorsnby.models.Article;
 import com.horsnby.gladesvillehorsnby.models.ArticleComment;
 import com.horsnby.gladesvillehorsnby.models.ArticleResponse;
-import com.horsnby.gladesvillehorsnby.models.ChangePW;
+import com.horsnby.gladesvillehorsnby.models.ClubNames;
+import com.horsnby.gladesvillehorsnby.models.ClubResponse;
 import com.horsnby.gladesvillehorsnby.models.Event;
 import com.horsnby.gladesvillehorsnby.models.EventResponse;
 import com.horsnby.gladesvillehorsnby.models.Folder;
@@ -89,6 +90,9 @@ public interface API {
 
     @GET("/apiv2/events/all")      //here is the other url part.best way is to start using /
     public void getAllEventings(@Header("Authorization") String auth, Callback<EventResponse> response);
+
+    @GET("/apiv2/groupmembers/all")
+    void getClubNames(Callback<ClubResponse> callback);
 
     @POST("/apiv2/events/save")
     public void postEvents(@Header("Authorization") String auth,

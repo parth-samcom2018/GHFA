@@ -54,12 +54,8 @@ public class GroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
-
         inflater = (LayoutInflater) this.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View v = inflater.inflate(R.layout.fragment_groups, container, false);
-
 
         isOnline();
 
@@ -71,7 +67,7 @@ public class GroupFragment extends Fragment {
         gridView = v.findViewById(R.id.list);
 
 
-        gridAdapter= new ArrayAdapter<Event>(this.getActivity(), R.layout.group_cell){
+        gridAdapter= new ArrayAdapter<Event>(GroupFragment.this.getActivity(), R.layout.group_cell){
 
 
             @Override
@@ -115,8 +111,6 @@ public class GroupFragment extends Fragment {
                     n.printStackTrace();
                 }
 
-
-
                 return convertView;
             }
 
@@ -126,7 +120,6 @@ public class GroupFragment extends Fragment {
             }
         };
         gridView.setAdapter(gridAdapter);
-
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -141,7 +134,6 @@ public class GroupFragment extends Fragment {
                 catch (NullPointerException e){
                     e.printStackTrace();
                 }
-
 
             }
         });

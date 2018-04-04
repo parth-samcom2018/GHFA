@@ -50,135 +50,127 @@ public class GroupVC extends BaseVC {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        setContentView(R.layout.activity_group_vc); //Call the EVENT layout cause it's the same
-
-
-        mSectionsPagerAdapter = new GroupVC.SectionsPagerAdapter(this.getSupportFragmentManager());
         try{
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            setContentView(R.layout.activity_group_vc); //Call the EVENT layout cause it's the same
+
+            mSectionsPagerAdapter = new SectionsPagerAdapter(this.getSupportFragmentManager());
 
             tv_grp_title = findViewById(R.id.group_title);
             tv_grp_title.setText(group.groupName);
-        }
 
-        catch (NullPointerException e){
-            e.printStackTrace();
-        }
+            tv_edit = findViewById(R.id.tv_edit);
 
+            ll_back = findViewById(R.id.ll_back);
+            ll_edit = findViewById(R.id.ll_edit);
 
-        tv_edit = findViewById(R.id.tv_edit);
+            ll_edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    inviteUserAction();
+                }
+            });
 
-        ll_back = findViewById(R.id.ll_back);
-        ll_edit = findViewById(R.id.ll_edit);
+            ll_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
 
-        ll_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                inviteUserAction();
-            }
-        });
+            // Set up the ViewPager with the sections adapter.
+            mViewPager = findViewById(R.id.grp_view_pager);
 
-        ll_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+            ViewPager.OnPageChangeListener pageListener = new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = findViewById(R.id.grp_view_pager);
-
-        ViewPager.OnPageChangeListener pageListener = new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-                setTitle(titles[position]);
-
-                switch (position)
-                {
-                    case 0:
-
-                        noticeBoardVCN.loadIfUnloaded();
-                        ll_edit.setVisibility(View.VISIBLE);
-                        tv_edit.setText("USER +");
-                        ll_edit.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                inviteUserAction();
-                            }
-                        });
-                        break;
-                    case 1:
-
-                        mediaVC.loadIfUnloaded();
-                        ll_edit.setVisibility(View.VISIBLE);
-                        tv_edit.setText("CREATE ALBUM +");
-
-                        break;
-                    case 2:
-                        fixturesVC.loadIfUnloaded();
-                        ll_edit.setVisibility(View.GONE);
-                        break;
-                    case 3:
-                        laddersVC.loadIfUnloaded();
-                        ll_edit.setVisibility(View.GONE);
-                        break;
-
-                    case 4:
-                        documentsVC.loadIfUnloaded();
-                        ll_edit.setVisibility(View.VISIBLE);
-                        tv_edit.setText("");
-                        break;
                 }
 
+                @Override
+                public void onPageSelected(int position) {
 
-                if (position==1){
-                    ll_edit.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            createAlbumAction();
-                        }
-                    });
+                    setTitle(titles[position]);
+
+                    switch (position)
+                    {
+                        case 0:
+
+                            noticeBoardVCN.loadIfUnloaded();
+                            ll_edit.setVisibility(View.VISIBLE);
+                            tv_edit.setText("USER +");
+                            ll_edit.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    inviteUserAction();
+                                }
+                            });
+                            break;
+                        case 1:
+
+                            mediaVC.loadIfUnloaded();
+                            ll_edit.setVisibility(View.VISIBLE);
+                            tv_edit.setText("CREATE ALBUM +");
+                            ll_edit.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    createAlbumAction();
+                                }
+                            });
+                            break;
+                        case 2:
+                            fixturesVC.loadIfUnloaded();
+                            ll_edit.setVisibility(View.GONE);
+                            break;
+                        case 3:
+                            laddersVC.loadIfUnloaded();
+                            ll_edit.setVisibility(View.GONE);
+                            break;
+
+                        case 4:
+                            documentsVC.loadIfUnloaded();
+                            ll_edit.setVisibility(View.VISIBLE);
+                            tv_edit.setText("");
+                            break;
+                    }
+
                 }
-            }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+                @Override
+                public void onPageScrollStateChanged(int state) {
 
-            }
-        };
+                }
+            };
 
-        mViewPager.addOnPageChangeListener(pageListener);
-
-
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+            mViewPager.addOnPageChangeListener(pageListener);
 
 
-        tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+            mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        this.noticeBoardVCN = (NoticeBoardVCN) NoticeBoardVCN.instantiate(this, NoticeBoardVCN.class.getName());
-        this.noticeBoardVCN.group = group;
 
-        this.mediaVC = (MediaVC) MediaVC.instantiate(this, MediaVC.class.getName());
-        this.mediaVC.group = group;
+            tabLayout = findViewById(R.id.tabs);
+            tabLayout.setupWithViewPager(mViewPager);
 
-        this.fixturesVC = (FixturesVC) FixturesVC.instantiate(this, FixturesVC.class.getName());
-        this.fixturesVC.group = group;
+            this.noticeBoardVCN = (NoticeBoardVCN) NoticeBoardVCN.instantiate(this, NoticeBoardVCN.class.getName());
+            this.noticeBoardVCN.group = group;
 
-        this.laddersVC = (LaddersVC)LaddersVC.instantiate(this, LaddersVC.class.getName());
-        this.laddersVC.ladder = ladder;
+            this.mediaVC = (MediaVC) MediaVC.instantiate(this, MediaVC.class.getName());
+            this.mediaVC.group = group;
 
-        this.documentsVC = (DocumentsVC) DocumentsVC.instantiate(this, DocumentsVC.class.getName());
-        this.documentsVC.group = group;
+            this.fixturesVC = (FixturesVC) FixturesVC.instantiate(this, FixturesVC.class.getName());
+            this.fixturesVC.group = group;
 
-        this.setTitle(group.groupName);
+            this.laddersVC = (LaddersVC)LaddersVC.instantiate(this, LaddersVC.class.getName());
+            this.laddersVC.ladder = ladder;
 
+            this.documentsVC = (DocumentsVC) DocumentsVC.instantiate(this, DocumentsVC.class.getName());
+            this.documentsVC.group = group;
+
+            //this.setTitle(group.groupName);
+        }
+        catch (NullPointerException n){
+            n.printStackTrace();
+        }
     }
 
 

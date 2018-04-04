@@ -1,6 +1,7 @@
 package com.horsnby.gladesvillehorsnby.models;
 
 public class Ladders {
+
     public int groupId;
     public String teamName;
     public int gamesWon;
