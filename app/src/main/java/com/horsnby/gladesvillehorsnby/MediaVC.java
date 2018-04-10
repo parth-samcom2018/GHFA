@@ -437,8 +437,6 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                     Toast.makeText(MediaVC.this.getActivity(), "You haven't Picked Image", Toast.LENGTH_LONG).show();
                 }
                 break;
-
-
         }
 
         if(bitmapImage != null)

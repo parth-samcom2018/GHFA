@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Registration"
+    tools:context="com.nsw.baseballnsw.Registration"
     android:background="@color/white_slight_transparent"
     android:id="@+id/rl_main">
 
@@ -12,7 +12,7 @@
         android:id="@+id/iv"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:src="@drawable/bg_img"
+        android:src="@drawable/header_bg"
         android:scaleType="centerCrop"
         android:background="#80000000"/>
 
@@ -63,19 +63,6 @@
             android:orientation="vertical"
             android:padding="5dp">
 
-
-            <Button
-                android:id="@+id/photo_button"
-                style="@style/orangebutton"
-                android:layout_width="@dimen/grid_cell_height_extra_large"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:text="Choose Profile Photo"
-                android:textStyle="bold"
-                android:visibility="gone"/>
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -101,7 +88,6 @@
                         android:inputType="text"
                         android:background="@null"
                         android:maxLines="1"
-                        android:padding="5dp"
                         android:textSize="16sp"
                         android:singleLine="true"
                         android:focusable="true"
@@ -134,7 +120,6 @@
                         android:textSize="16sp"
                         android:singleLine="true"
                         android:focusable="true"
-                        android:padding="5dp"
                         android:focusableInTouchMode="true"
                         android:imeOptions="actionNext"
                         android:fontFamily="@font/lato_regular"
@@ -164,7 +149,6 @@
                         android:textSize="16sp"
                         android:singleLine="true"
                         android:focusable="true"
-                        android:padding="5dp"
                         android:focusableInTouchMode="true"
                         android:imeOptions="actionNext"
                         tools:ignore="InvalidImeActionId,TextFields"
@@ -177,11 +161,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="3"
+                android:weightSum="2"
                 android:elevation="5dp"
                 android:orientation="vertical"
                 android:background="@drawable/textshape"
                 android:layout_margin="10dp">
+
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -200,13 +185,13 @@
                         android:maxLines="1"
                         android:textSize="16sp"
                         android:singleLine="true"
-                        android:padding="5dp"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:imeOptions="actionNext"
                         android:fontFamily="@font/lato_regular"
                         android:textColorHint="@color/black"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black"
+                        />
                 </android.support.design.widget.TextInputLayout>
 
 
@@ -225,7 +210,6 @@
                         android:hint="@string/l_name"
                         android:inputType="text"
                         android:background="@null"
-                        android:padding="5dp"
                         android:maxLines="1"
                         android:textSize="16sp"
                         android:singleLine="true"
@@ -235,7 +219,8 @@
                         android:fontFamily="@font/lato_regular"
                         android:textColorHint="@color/black"
                         android:textColor="@color/black"
-                        />
+                        tools:ignore="TextFields" />
+
                 </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
@@ -252,8 +237,7 @@
                 segmentedgroup:sc_corner_radius="5dp"
                 segmentedgroup:sc_tint_color="@color/colorPrimary"
                 android:background="@drawable/mfshape"
-                android:weightSum="2"
-                >
+                android:weightSum="2">
 
                 <RadioButton
                     android:id="@+id/buttonsg1"
@@ -279,7 +263,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="4"
+                android:weightSum="6"
                 android:elevation="5dp"
                 android:orientation="vertical"
                 android:background="@drawable/textshape"
@@ -288,7 +272,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_margin="15dp"
                     android:textColorHint="@color/black">
                     <EditText
@@ -301,7 +285,6 @@
                         android:background="@null"
                         android:textSize="16sp"
                         android:singleLine="true"
-                        android:padding="5dp"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:imeOptions="actionNext"
@@ -314,7 +297,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_margin="15dp"
                     android:textColorHint="@color/black">
 
@@ -323,8 +306,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:weightSum="2"
-                        android:id="@+id/ll_country_register"
-                        android:visibility="visible">
+                        android:id="@+id/ll_country_register">
 
 
                         <EditText
@@ -339,7 +321,6 @@
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:maxLines="4"
-                            android:padding="5dp"
                             android:singleLine="true"
                             android:textSize="16sp"
                             android:fontFamily="@font/lato_regular"
@@ -347,14 +328,14 @@
                             android:textColor="@color/black"
                             />
 
+
                         <ImageButton
-                            android:id="@+id/ib_down"
+                            android:background="@android:color/transparent"
                             android:layout_weight="0.2"
+                            android:id="@+id/ib_down"
                             android:layout_width="0dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_drop_down"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"/>
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_drop_down"/>
 
                     </LinearLayout>
                 </android.support.design.widget.TextInputLayout>
@@ -362,7 +343,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_margin="15dp"
                     android:textColorHint="@color/black">
 
@@ -376,7 +357,6 @@
                         android:background="@null"
                         android:textSize="16sp"
                         android:singleLine="true"
-                        android:padding="5dp"
                         android:focusable="true"
                         android:fontFamily="@font/lato_regular"
                         android:textColorHint="@color/black"
@@ -463,8 +443,7 @@
                     android:inputType="text"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                     android:layout_weight="0.5"
-                    android:fontFamily="@font/lato_regular"
-                   />
+                    android:fontFamily="@font/lato_regular" />
 
 
             </LinearLayout>

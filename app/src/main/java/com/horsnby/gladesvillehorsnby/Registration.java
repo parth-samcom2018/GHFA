@@ -34,10 +34,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -54,6 +56,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -67,16 +70,12 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedFile;
 
-public class Registration extends BaseVC implements AdapterView.OnItemClickListener{
+public class Registration extends BaseVC{
 
-
-    private ListView listView;
-    private ArrayAdapter<ClubNames> listAdapter;
     //MODELS
     private List<ClubNames> clubNames = new Vector<ClubNames>(); //empty
-
-    static final int REQUEST_TAKE_PHOTO = 1;
-    static final int REQUEST_PICK_IMAGE = 2;
+    private ArrayAdapter<ClubNames> arrayAdapter;
+    ArrayList<String> selectedItems;
 
     public static final String MYPref = "Pref";
     public static final String ALLOW_KEY = "ALLOWED";
@@ -88,10 +87,14 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
     private static final int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 100;
 
     boolean isSelected;
-    private CheckBox cbItem;
-    //VIEWS
-    private CircleImageView profileIV;
+    private CheckedTextView checkBox;
+    private ListView listView;
+    private Button btn_dialog;
+    private ProgressBar pr;
+    Dialog dialog;
+    Event event;
 
+    private Button registerButton;
     private EditText emailET;
     private EditText passwordET;
     private EditText passwordConfirmET;
@@ -103,13 +106,9 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
     private EditText birthYearET;
     private EditText countryET;
     private ImageButton ib_down;
-
     private EditText postCodeET;
     SharedPreferences sPref;
     private Switch termsSwitch;
-
-    String[] country = { "Select Country","India", "USA", "China", "Japan", "Other",  };
-    private Object data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +154,6 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
             }
         });
 
-        //countryET.setEnabled(false);
         countryET.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -429,19 +427,32 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
                         registerModel.GroupName = name;
                         makeRegistrationRequest(registerModel);*/
 
-                        final Dialog dialog = new Dialog(Registration.this);
+                        dialog = new Dialog(Registration.this);
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.setCancelable(true);
                         dialog.setContentView(R.layout.custom_dialogbox_register);
                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        pr = dialog.findViewById(R.id.progressbar);
+                        btn_dialog = dialog.findViewById(R.id.btn_dialog);
 
                         listView = dialog.findViewById(R.id.list);
-                        final Button btn_dialog = dialog.findViewById(R.id.btn_dialog);
+                        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+                        DM.getApi().getClubNames(new Callback<ClubResponse>() {
+                            @Override
+                            public void success(ClubResponse clubResponse, Response response) {
+                                clubNames = clubResponse.getData();
+                                arrayAdapter.notifyDataSetChanged();
+                                pr.setVisibility(View.GONE);
+                            }
 
-                        listAdapter = new ArrayAdapter<ClubNames>(Registration.this, R.layout.club_one) {
+                            @Override
+                            public void failure(RetrofitError error) {
+                                pr.setVisibility(View.GONE);
+                            }
+                        });
 
+                        arrayAdapter = new ArrayAdapter<ClubNames>(Registration.this, R.layout.club_one) {
 
-                            @SuppressLint("ClickableViewAccessibility")
                             @Override
                             public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -449,35 +460,11 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
                                     convertView = LayoutInflater.from(Registration.this).inflate(R.layout.club_one, parent, false);
                                 }
 
-                                ClubNames e = clubNames.get(position);
+                                final ClubNames e = clubNames.get(position);
 
-                                cbItem = convertView.findViewById(R.id.cb1);
-                                cbItem.setText(e.groupName);
-                                cbItem.setChecked(false);
-                                cbItem.setOnTouchListener(new View.OnTouchListener() {
-                                    @Override
-                                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                                        cbItem.setChecked(false);
-                                        return false;
-                                    }
-                                });
+                                checkBox = convertView.findViewById(R.id.txt_title);
+                                checkBox.setText(e.groupName);
 
-                                cbItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                    @Override
-                                    public void onCheckedChanged(CompoundButton compoundButton, boolean ischeck) {
-                                        String name = cbItem.getText().toString();
-
-                                        if (cbItem.isChecked()){
-                                            cbItem.setChecked(true);
-                                            Toast.makeText(Registration.this, "" + position, Toast.LENGTH_SHORT).show();
-                                            registerModel.groupName = name;
-                                            registerModel.groupId = position;
-                                        }
-                                        if (!cbItem.isChecked()){
-                                            btn_dialog.setClickable(false);
-                                        }
-                                    }
-                                });
                                 return convertView;
                             }
 
@@ -486,39 +473,33 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
                                 return clubNames.size();
                             }
                         };
-                        listView.setAdapter(listAdapter);
+                        listView.setAdapter(arrayAdapter);
+
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                // selected item
+                                /*String selectedItem = ((TextView) view).getText().toString();
+                                Toast.makeText(Registration.this, "" + selectedItem, Toast.LENGTH_SHORT).show();*/
+                            }
+
+                        });
 
                         btn_dialog.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                if (cbItem.isChecked()){
-                                    cbItem.setChecked(true);
-                                    String name = cbItem.getText().toString();
-                                    registerModel.groupName = name;
-                                    registerModel.groupId = cbItem.getId();
-                                    makeRegistrationRequest(registerModel);
-                                }
+
+                                int selectedItem = listView.getCheckedItemPosition();
+                                //Toast.makeText(Registration.this, "" + selectedItem, Toast.LENGTH_SHORT).show();
+                                ClubNames e = clubNames.get(selectedItem);
+                                String name = "GLadesville Hornsby";
+
+                                registerModel.groupId = e.groupId;
+                                registerModel.groupName = name;
+                                makeRegistrationRequest(registerModel);
                             }
                         });
-
-                        final ProgressDialog pd = DM.getPD(Registration.this,"Loading Clubs...");
-                        pd.show();
-
-                        DM.getApi().getClubNames(new Callback<ClubResponse>() {
-                            @Override
-                            public void success(ClubResponse clubResponse, Response response) {
-                                clubNames = clubResponse.getData();
-                                listAdapter.notifyDataSetChanged();
-                                pd.dismiss();
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-                                pd.dismiss();
-                            }
-                        });
-
                         dialog.show();
+
 
                         SharedPreferences preferences = getSharedPreferences(MYPref, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
@@ -644,133 +625,6 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
     }
 
 
-
-    private Uri capturedImageUri;
-    String mCurrentPhotoPath;
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-
-        capturedImageUri = Uri.fromFile(image);
-        return image;
-    }
-
-
-    private String imgDecodableString;
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        Bitmap b = null;
-
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
-            // Bundle extras = data.getExtras();
-            //Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-            Log.d("hq", "request take photo");
-            try {
-                b = MediaStore.Images.Media.getBitmap(this.getApplicationContext().getContentResolver(), capturedImageUri);
-                Log.d("hipcook", "I now have a photo bitmap:" + b.getWidth());
-                float scaleFactor = 640f / b.getWidth();
-                b = DM.createScaledBitmap(b, scaleFactor);
-                Log.d("hipcook", "I now have a scaled photo bitmap:" + b.getWidth());
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.d("hipcook", "bitmap exception");
-            }
-        } else if (requestCode == REQUEST_PICK_IMAGE &&
-                resultCode == Activity.RESULT_OK &&
-                null != data) {
-            // Get the Image from data
-
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-            // Get the cursor
-            Cursor cursor = this.getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            imgDecodableString = cursor.getString(columnIndex);
-            cursor.close();
-
-            b = DM.decodeSampledBitmapFromFile(imgDecodableString, 640, 640);
-            Log.d("hipcook", "I now have a bitmap:" + b.getWidth());
-
-
-        } else {
-            Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
-        }
-
-        //if found a bitmap, upload or save in registration model
-        if (b != null) {
-
-            profileIV.setImageBitmap(b);
-            newProfileImage = b;
-        }
-    }
-
-    private Bitmap newProfileImage = null;
-    private void postImagefromImageView()
-    {
-        if(newProfileImage == null) return; //no need to upload
-        final Bitmap b = newProfileImage;
-
-        final ProgressDialog pd = DM.getPD(this, "Updating Profile Image...");
-        pd.show();
-
-        String fileName = "photo.png";
-        File f = new File(this.getCacheDir(), fileName);
-        try {
-            f.createNewFile();
-            //Convert bitmap to byte array
-
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            b.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-            byte[] bitmapdata = bos.toByteArray();
-
-            //write the bytes in file
-            FileOutputStream fos = new FileOutputStream(f);
-            fos.write(bitmapdata);
-            fos.flush();
-            fos.close();
-
-
-            TypedFile typedImage = new TypedFile("image/png", f);
-            DM.getApi().postProfileImage(DM.getAuthString(), typedImage, new Callback<Response>() {
-                @Override
-                public void success(Response response, Response response2) {
-                    Toast.makeText(Registration.this, "Profile Image Updated", Toast.LENGTH_LONG).show();
-                    pd.hide();
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-
-                    Toast.makeText(Registration.this, "Could not update profile image: " + error.getMessage(), Toast.LENGTH_LONG).show();
-                    pd.hide();
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.d("hq", "file exception");
-        }
-
-    }
-
-
     public boolean isOnline() {
 
         ConnectivityManager connec =
@@ -793,11 +647,6 @@ public class Registration extends BaseVC implements AdapterView.OnItemClickListe
         return false;
     }
 
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Toast.makeText(this, country[i], Toast.LENGTH_SHORT).show();
-    }
 
 
 }
