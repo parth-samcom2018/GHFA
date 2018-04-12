@@ -4,27 +4,16 @@
     android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/textposter_height"
-    android:padding="@dimen/small_pad"
     android:layout_alignParentBottom="true"
     android:background="@color/white">
-
-    <ImageView
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/create_post"
-        android:padding="10dp"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/comment_shape"
-        android:elevation="5dp"><requestFocus/></ImageView>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/button"
-        android:isScrollContainer="true">
+        android:isScrollContainer="true"
+        android:padding="10dp"
+        android:layout_alignParentBottom="true">
         <EditText
-            android:layout_gravity="center"
             android:minLines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,5 +23,16 @@
             android:background="@android:color/transparent"
             />
     </ScrollView>
-
+    <ImageView
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/create_post"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/comment_shape"
+        android:elevation="5dp"><requestFocus/></ImageView>
 </com.horsnby.gladesvillehorsnby.views.TextPoster>

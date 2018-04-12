@@ -14,7 +14,6 @@ public class BaseVC extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onPause() {
         // overridePendingTransition(R.anim.push_left_in, R.anim.push_left_in);

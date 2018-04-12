@@ -379,6 +379,66 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
     private String imgDecodableString;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Bitmap b = null;
+
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+            // Bundle extras = data.getExtras();
+            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            Log.d("hipcook", "request take photo");
+            try {
+                b= MediaStore.Images.Media.getBitmap(getActivity().getApplicationContext().getContentResolver(), capturedImageUri);
+                Log.d("hipcook", "I now have a photo bitmap:" + b.getWidth());
+                float scaleFactor = 640f/ b.getWidth();
+                b = DM.createScaledBitmap(b,scaleFactor);
+                Log.d("hipcook", "I now have a scaled photo bitmap:" + b.getWidth());
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.d("hipcook", "bitmap exception");
+            }
+        }
+        else if (requestCode == REQUEST_PICK_IMAGE &&
+                resultCode == Activity.RESULT_OK &&
+                null != data) {
+            // Get the Image from data
+
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            // Get the cursor
+            Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+            cursor.moveToNext();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            imgDecodableString = cursor.getString(columnIndex);
+            cursor.close();
+
+            b = DM.decodeSampledBitmapFromFile(imgDecodableString, 640,640);
+            Log.d("hipcook", "I now have a bitmap:" + b.getWidth());
+
+
+
+        } else {
+            Toast.makeText(this.getActivity(), "You haven't picked Image", Toast.LENGTH_LONG).show();
+        }
+
+        //if found a bitmap do the crop fun
+        if(b != null)
+        {
+            CropActivity.del = this;
+            bitmapToCrop = b;
+            Intent i = new Intent(this.getActivity(), CropActivity.class);
+            startActivity(i);
+        }
+    }
+
+
+   /* private String imgDecodableString;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         Bitmap bitmapImage = null;
@@ -437,6 +497,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                     Toast.makeText(MediaVC.this.getActivity(), "You haven't Picked Image", Toast.LENGTH_LONG).show();
                 }
                 break;
+
         }
 
         if(bitmapImage != null)
@@ -446,7 +507,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
             Intent i = new Intent(this.getActivity(), CropActivity.class);
             startActivity(i);
         }
-    }
+    }*/
 
     @Override
     public void didCropBitmap(final Bitmap b) {

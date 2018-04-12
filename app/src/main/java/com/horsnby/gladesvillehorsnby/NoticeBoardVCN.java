@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -334,9 +335,19 @@ public class NoticeBoardVCN extends Fragment {
                     Button btnFlag = convertView.findViewById(R.id.flagButton);
                     //secondTV.setTextColor(Color.WHITE);
                     secondTV.setText(n.text);
-                    Button flagButton = convertView.findViewById(R.id.flagButton);
-                    flagButton.setOnClickListener(DM.getFlagOnClickListener(getActivity()));
+                    Linkify.addLinks(secondTV, Linkify.WEB_URLS);
+                    btnFlag.setOnClickListener(DM.getFlagOnClickListener(getActivity()));
+                    secondTV.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (n.notificationTypeId == Notification.TYPE_NOTIFICATION) {
 
+                                NotificationVC.notification = n;
+                                Intent i = new Intent(NoticeBoardVCN.this.getActivity(), NotificationVC.class);
+                                startActivity(i);
+                            }
+                        }
+                    });
                 }
 
                 //top title in listitem

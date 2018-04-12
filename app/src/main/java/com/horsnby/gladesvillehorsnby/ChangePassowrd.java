@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.horsnby.gladesvillehorsnby.models.ChangePW;
-
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -37,7 +35,6 @@ public class ChangePassowrd extends BaseVC{
         etconfirmpw = findViewById(R.id.et_confirm_pw);
         savebutton = findViewById(R.id.save_button);
         cancel_button = findViewById(R.id.cancel_button);
-
 
         savebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +67,6 @@ public class ChangePassowrd extends BaseVC{
 
         et_old_pw.setText(pref.getString("autoSave", ""));
     }
-
 
     private void changePasswordAction() {
 
@@ -144,7 +140,6 @@ public class ChangePassowrd extends BaseVC{
             DM.hideKeyboard(ChangePassowrd.this);
             return;
         }
-
 
 
         final ProgressDialog pd = DM.getPD(ChangePassowrd.this, "Loading for Changing Password...");

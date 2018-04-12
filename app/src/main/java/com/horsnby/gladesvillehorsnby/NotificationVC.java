@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,8 +121,9 @@ public class NotificationVC extends BaseVC {
         TextView secondTV = findViewById(R.id.secondTV);
         secondTV.setText(notification.getTimeAgo() + "");
 
-        TextView mainTV = findViewById(R.id.mainTV);
-        mainTV.setText(notification.text);
+        final TextView mainTV = findViewById(R.id.mainTV);
+        mainTV.setMovementMethod(LinkMovementMethod.getInstance());
+        mainTV.setText(Html.fromHtml(notification.text));
 
         ll_back = findViewById(R.id.ll_back);
         ll_back.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +141,7 @@ public class NotificationVC extends BaseVC {
                 //.fetch();
                 .into(userIV);
 
+        Linkify.addLinks(mainTV, Linkify.WEB_URLS);
 
 
         textPoster = findViewById(R.id.textposter);

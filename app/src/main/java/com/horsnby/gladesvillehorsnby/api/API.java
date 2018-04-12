@@ -1,10 +1,6 @@
 package com.horsnby.gladesvillehorsnby.api;
 
 
-import com.horsnby.gladesvillehorsnby.models.Article;
-import com.horsnby.gladesvillehorsnby.models.ArticleComment;
-import com.horsnby.gladesvillehorsnby.models.ArticleResponse;
-import com.horsnby.gladesvillehorsnby.models.ClubNames;
 import com.horsnby.gladesvillehorsnby.models.ClubResponse;
 import com.horsnby.gladesvillehorsnby.models.Event;
 import com.horsnby.gladesvillehorsnby.models.EventResponse;
@@ -219,24 +215,6 @@ public interface API {
     @GET("/apiv2/ladders/14")
     public void getLadders(@Header("Authorization") String auth, Callback<LaddersResponse> response);
 
-    //new api v2
-    @FormUrlEncoded
-    @POST("/apiv2/articles/Comment/{groupID}/{articleID}")
-    public void postArticleComments(@Header("Authorization") String auth,
-                                    @Path("groupID") int  groupID,
-                                    @Path("articleID") int articleID,
-                                    @Field("ArticleCommentDescription") String comment,
-                                    Callback<ArticleComment> callback);
-
-    //new api v2
-    @GET("/apiv2/Articles/{articleID}")
-    public void getArticles(@Header("Authorization") String auth,
-                            @Path("articleID") int articleID,
-                            Callback<Article> response);
-
-    //new api v2
-    @GET("/apiv2/articles/get/{groupID}")
-    public void getGroupArticlesnew(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<ArticleResponse> response);
 
     //new api v2
     @GET("/apiv2/document/get/{groupID}")
@@ -248,11 +226,7 @@ public interface API {
                           @Body Folder registerModel,
                           Callback<Response> callback);
 
-    //older api
-    @GET("/api/Articles/{articleID}")
-    public void getArticle(@Header("Authorization") String auth,
-                           @Path("articleID") int articleID,
-                           Callback<Article> response);
+
 
 
 

@@ -25,8 +25,6 @@ public class CropActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crop);
 
-
-
         cropImageView = findViewById(R.id.cropImageView);
         // final ImageView croppedImageView = (ImageView)findViewById(R.id.croppedImageView);
         cropImageView.setCropMode(CropImageView.CropMode.RATIO_FREE);
@@ -54,7 +52,6 @@ public class CropActivity extends AppCompatActivity {
                 cropImageView.rotateImage(CropImageView.RotateDegrees.ROTATE_90D);
             }
         });
-
     }
 
     private void doneAction()
@@ -62,7 +59,6 @@ public class CropActivity extends AppCompatActivity {
         del.didCropBitmap(cropImageView.getCroppedBitmap());
         del = null;
         this.finish();
-
     }
 
 }

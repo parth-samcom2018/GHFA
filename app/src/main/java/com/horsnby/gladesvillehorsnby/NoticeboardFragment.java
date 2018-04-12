@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,7 +34,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.horsnby.gladesvillehorsnby.api.API;
-import com.horsnby.gladesvillehorsnby.models.Article;
 import com.horsnby.gladesvillehorsnby.models.Event;
 import com.horsnby.gladesvillehorsnby.models.Group;
 import com.horsnby.gladesvillehorsnby.models.GroupResponse;
@@ -327,11 +327,21 @@ public class NoticeboardFragment extends Fragment {
                     convertView = LayoutInflater.from(NoticeboardFragment.this.getContext()).inflate(R.layout.main_cell_item, parent, false);
                     TextView secondTV = convertView.findViewById(R.id.secondTV);
                     Button btnFlag = convertView.findViewById(R.id.flagButton);
-                    //secondTV.setTextColor(Color.WHITE);
                     secondTV.setText(n.text);
-                    Button flagButton = convertView.findViewById(R.id.flagButton);
-                    flagButton.setOnClickListener(DM.getFlagOnClickListener(getActivity()));
+                    Linkify.addLinks(secondTV, Linkify.WEB_URLS);
 
+                    btnFlag.setOnClickListener(DM.getFlagOnClickListener(getActivity()));
+                    secondTV.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (n.notificationTypeId == Notification.TYPE_NOTIFICATION) {
+
+                                NotificationVC.notification = n;
+                                Intent i = new Intent(NoticeboardFragment.this.getActivity(), NotificationVC.class);
+                                startActivity(i);
+                            }
+                        }
+                    });
                 }
 
                 //top title in listitem
@@ -410,55 +420,6 @@ public class NoticeboardFragment extends Fragment {
 
                         }
 
-
-                        if (n.notificationTypeId == Notification.TYPE_ARTICLE) {
-
-                            final ProgressDialog pd = DM.getPD(getActivity(), "Loading Article...");
-                            pd.show();
-                            DM.getApi().getArticle(DM.getAuthString(), n.notificationItemId, new Callback<Article>() {
-                                @Override
-                                public void success(final Article article, Response response) {
-
-
-                                    DM.getApi().getAllGroups(DM.getAuthString(), new Callback<List<Group>>() {
-                                        @Override
-                                        public void success(List<Group> groups, Response response) {
-
-                                            pd.dismiss();
-                                            for (Group g : groups) {
-                                                if (g.groupId == n.familyId) {
-                                                    ArticleVC.group = g;
-                                                    break;
-                                                }
-                                            }
-
-                                            ArticleVC.article = article;
-                                            Intent i = new Intent(NoticeboardFragment.this.getActivity(), ArticleVC.class);
-                                            startActivity(i);
-                                        }
-
-                                        @Override
-                                        public void failure(RetrofitError error) {
-
-                                            pd.dismiss();
-                                            Toast.makeText(getActivity(), "Could not load " + error.getMessage(), Toast.LENGTH_LONG).show();
-                                        }
-                                    });
-
-
-                                }
-
-                                @Override
-                                public void failure(RetrofitError error) {
-
-                                    pd.dismiss();
-                                    Toast.makeText(getActivity(), "Could not load article, try later " + error.getMessage(), Toast.LENGTH_LONG).show();
-
-                                }
-                            });
-
-
-                        }
 
 
                         if (n.notificationTypeId == Notification.TYPE_EVENT) {
