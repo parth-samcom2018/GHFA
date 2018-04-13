@@ -19,7 +19,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -162,12 +164,21 @@ public class Registration extends BaseVC{
         });
 
         postCodeET = findViewById(R.id.postCodeET);
-
-        postCodeET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        postCodeET.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (!b){
-                    hideKeyBoard(view);
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length()>=2){
+                    DM.hideKeyboard(Registration.this);
                 }
             }
         });
@@ -216,11 +227,6 @@ public class Registration extends BaseVC{
             }
         });
 
-    }
-
-    private void hideKeyBoard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void chooseCountryAction()
