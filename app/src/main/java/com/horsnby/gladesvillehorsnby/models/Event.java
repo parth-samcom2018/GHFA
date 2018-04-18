@@ -26,13 +26,12 @@ public class Event {
     public List<EventComment> comments = new ArrayList<>();
     public String memberAvatar;
     public String groupName;
-    public String getDateString()
-    {
+
+    public String getDateString() {
         return DM.getDateOnlyString(eventStart);
     }
 
-    public String getTimeString()
-    {
+    public String getTimeString() {
         return DM.getTimeOnlyString(eventStart);
     }
 

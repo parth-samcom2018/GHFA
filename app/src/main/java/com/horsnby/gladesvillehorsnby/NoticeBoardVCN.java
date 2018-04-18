@@ -353,7 +353,7 @@ public class NoticeBoardVCN extends Fragment {
                 //top title in listitem
 
                 TextView firstTV = convertView.findViewById(R.id.firstTV);
-                String topString = "Added " + n.getTimeAgo() + " in the  <font color='#e2441f'>" + n.familyName + "</font> group";
+                String topString = "Added " + n.getTimeAgo() + " in the  <font color='#e3af03'>" + n.familyName + "</font> group";
                 firstTV.setText(Html.fromHtml(topString));
 
                 //comments

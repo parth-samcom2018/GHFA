@@ -267,8 +267,8 @@ public class Login extends BaseVC {
 
                     //get the device TOKEN id in background...set for push
 
-                    /*Intent service = new Intent(Login.this, RegistrationIntentService.class);
-                    startService(service);*/
+                    Intent service = new Intent(Login.this, RegistrationIntentService.class);
+                    startService(service);
 
                     proceed();
 

@@ -35,6 +35,9 @@
                 style="@style/textview_small"
                 android:gravity="center"
                 android:maxLines="2"
+                android:textSize="12sp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:fontFamily="@font/lato_regular"
                 android:text="Rugby National Now I have A really long adn big name" />
         </LinearLayout>
 
@@ -61,7 +64,10 @@
                     style="@style/textview_small"
                     android:layout_marginLeft="15dp"
                     android:singleLine="true"
-                    android:gravity="center_vertical" />
+                    android:gravity="center_vertical"
+                    android:textSize="12sp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:fontFamily="@font/lato_regular"/>
 
                 <Button
                     android:id="@+id/flagButton"
@@ -91,7 +97,8 @@
                     android:layout_height="150dp"
                     android:elevation="10dp"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/notice_shape">
+                    android:background="@drawable/notice_shape"
+                    android:layout_marginLeft="10dp">
 
                     <ImageView
                         android:id="@+id/bodyIV"
@@ -100,7 +107,6 @@
                         android:src="@drawable/logo_log_in"
                         android:scaleType="fitXY"
                         android:adjustViewBounds="true"
-
                         />
 
                     <TextView
@@ -109,13 +115,14 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentStart="true"
-                        android:fontFamily="@font/lato_regular"
                         android:gravity="center"
                         android:padding="10dp"
                         android:text="Sports Club HQ"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                         android:textColor="@color/white"
-                        android:layout_alignParentLeft="true" />
+                        android:layout_alignParentLeft="true"
+                        android:textSize="14sp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:fontFamily="@font/lato_regular"/>
 
 
                 </RelativeLayout>
@@ -147,7 +154,10 @@
                 android:singleLine="true"
                 android:gravity="bottom|left"
                 android:layout_gravity="bottom|left"
-                android:layout_marginStart="15dp" />
+                android:layout_marginStart="15dp"
+                android:textSize="12sp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:fontFamily="@font/lato_regular"/>
 
         </LinearLayout>
 

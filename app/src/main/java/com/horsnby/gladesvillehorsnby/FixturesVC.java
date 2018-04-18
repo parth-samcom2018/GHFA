@@ -137,7 +137,6 @@ public class FixturesVC extends Fragment implements SwipeRefreshLayout.OnRefresh
             @Override
             public void success(EventResponse events, Response response) {
 
-
                 FixturesVC.this.events = events.getData();
                 Log.d("hq", "events: "+(events.getData()).size()+"");
                 listAdapter.notifyDataSetChanged();

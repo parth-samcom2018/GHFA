@@ -61,7 +61,7 @@ public class DocumentsVC extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(false);
 
         // Inflate the layout for this fragment
         inflater = (LayoutInflater) this.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -125,16 +125,10 @@ public class DocumentsVC extends Fragment {
                         f = rootFolder.childFolders.get(position);
                     }
 
-
-
                 }
                 else if(groupRootFolder != null)
                 {
                     f = groupRootFolder.folders.get(position);
-                }
-                else
-                {
-
                 }
 
                 TextView firstTV = convertView.findViewById(R.id.textView);
@@ -170,7 +164,6 @@ public class DocumentsVC extends Fragment {
 
                         }
 
-
                         if(chosenFile !=null)
                         {
                             //open file
@@ -185,14 +178,9 @@ public class DocumentsVC extends Fragment {
                             Intent i = new Intent(DocumentsVC.this.getActivity(), WebVC.class);
                             startActivity(i);
 
-
-/*
-                            PDFVC.url = chosenFile.url;
+                            /*PDFVC.url = chosenFile.url;
                             Intent i = new Intent(DocumentsVC.this.getContext(), PDFVC.class);
-                            startActivity(i);
-                            */
-
-
+                            startActivity(i);*/
                         }
 
                         modelToView();

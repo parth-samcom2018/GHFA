@@ -16,9 +16,8 @@ public class MediaAlbum {
     public String coverImage;
 
 
-    public void sortMediaAlbumsByDate()
-    {
-        Collections.sort(this.mediaModels, new Comparator<Media>(){
+    public void sortMediaAlbumsByDate() {
+        Collections.sort(this.mediaModels, new Comparator<Media>() {
             public int compare(Media emp1, Media emp2) {
 
                 //descending ids = descending date, better to fix in api but oh well

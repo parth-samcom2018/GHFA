@@ -13,8 +13,7 @@ public class NotificationComment {
     public String comment;
     public String memberAvatar;
 
-    public String getTimeAgo()
-    {
+    public String getTimeAgo() {
         return DM.getTimeAgo(this.commentAdded);
     }
 }

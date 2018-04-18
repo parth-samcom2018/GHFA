@@ -35,7 +35,7 @@ public class RegistrationIntentService extends IntentService {
 
 
         try {
-            /*InstanceID instanceID = InstanceID.getInstance(this);
+            InstanceID instanceID = InstanceID.getInstance(this);
             String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
 
@@ -44,7 +44,7 @@ public class RegistrationIntentService extends IntentService {
             String existingRegistered = prefs.getString("GCM_TOKEN","");
 
             if(token != existingRegistered) registerPushWithServer(token);
-            else Log.d("hq","No need to update "+token);*/
+            else Log.d("hq","No need to update "+token);
 
         } catch (Exception e) {
             Log.d("hq","gcm registration exception");

@@ -38,25 +38,23 @@ public class Member {
     @SerializedName("data")
     private DataEntity data;
 
-    public String getBirthYearFromDOB()
-    {
+    public String getBirthYearFromDOB() {
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a");
 
         try {
             Date birthYear = formatter.parse(this.dateOfBirth);
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(birthYear);
-            return ""+calendar.get(Calendar.YEAR);
+            return "" + calendar.get(Calendar.YEAR);
 
         } catch (ParseException e) {
             e.printStackTrace();
-            Log.d("hq","could not parse birth year:"+e.getMessage());
+            Log.d("hq", "could not parse birth year:" + e.getMessage());
             return "";
         }
     }
 
-    public void copyAttributesFromDetails(Member.DataEntity d)
-    {
+    public void copyAttributesFromDetails(Member.DataEntity d) {
         this.firstName = d.firstNameX;
         this.lastName = d.lastNameX;
         this.email = d.emailX;

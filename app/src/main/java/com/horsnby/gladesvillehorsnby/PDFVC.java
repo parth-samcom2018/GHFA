@@ -1,10 +1,9 @@
 package com.horsnby.gladesvillehorsnby;
 
-import android.app.Activity;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 
 import com.joanzapata.pdfview.PDFView;
 
@@ -27,7 +26,7 @@ public class PDFVC extends AppCompatActivity {
 
         this.setTitle("PDF Viewer");
 
-        pdfView = findViewById(R.id.pdfview);
+        pdfView = (PDFView) findViewById(R.id.pdfview);
         pdfView.enableSwipe(true);
 
 
@@ -84,6 +83,4 @@ public class PDFVC extends AppCompatActivity {
             pdfView.fromFile(file).load();
         }
     }
-
 }
-

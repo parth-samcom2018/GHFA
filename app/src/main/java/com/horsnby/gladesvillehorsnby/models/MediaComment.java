@@ -13,8 +13,7 @@ public class MediaComment {
     public String memberAvatar;
     public Date commentDate;
 
-    public String getTimeAgo()
-    {
+    public String getTimeAgo() {
         return DM.getTimeAgo(commentDate);
     }
 }

@@ -31,7 +31,7 @@ import retrofit.client.Response;
 
 public class LaddersVC extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
-    public static Ladders ladder;
+    Ladders ladder;
     private ListView listView;
     private ArrayAdapter<Ladders> listadapter;
     private SwipeRefreshLayout refreshLayout;

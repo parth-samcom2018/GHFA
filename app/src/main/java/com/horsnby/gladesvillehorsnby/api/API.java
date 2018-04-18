@@ -1,6 +1,9 @@
 package com.horsnby.gladesvillehorsnby.api;
 
 
+import com.horsnby.gladesvillehorsnby.models.Article;
+import com.horsnby.gladesvillehorsnby.models.ArticleComment;
+import com.horsnby.gladesvillehorsnby.models.ArticleResponse;
 import com.horsnby.gladesvillehorsnby.models.ClubResponse;
 import com.horsnby.gladesvillehorsnby.models.Event;
 import com.horsnby.gladesvillehorsnby.models.EventResponse;
@@ -57,7 +60,7 @@ public interface API {
 
     @FormUrlEncoded
     @POST("/apiv2/account/changepassword")
-    public void postNewPassword(@Header("Authorization")String auth,
+    public void postNewPassword(@Header("Authorization") String auth,
                                 @Field("oldPassword") String oldPassword,
                                 @Field("newPassword") String newPassword,
                                 @Field("confirmPassword") String confirmPassword,
@@ -87,6 +90,7 @@ public interface API {
     @GET("/apiv2/events/all")      //here is the other url part.best way is to start using /
     public void getAllEventings(@Header("Authorization") String auth, Callback<EventResponse> response);
 
+
     @GET("/apiv2/groupmembers/all")
     void getClubNames(Callback<ClubResponse> callback);
 
@@ -106,11 +110,12 @@ public interface API {
 
 
     //new api v2
-    @GET("/apiv2/groupMembers/groups")      //here is the other url part.best way is to start using /
+    @GET("/apiv2/groupMembers/groups")
+    //here is the other url part.best way is to start using /
     public void getAllGrouping(@Header("Authorization") String auth, Callback<GroupResponse> response);
 
     @GET("/apiv2/events/{eventID}")
-    public void getEvent(@Header("Authorization") String auth,@Path("eventID") int eventID, Callback<Event> response);
+    public void getEvent(@Header("Authorization") String auth, @Path("eventID") int eventID, Callback<Event> response);
 
     @FormUrlEncoded
     @POST("/apiv2/events/comment")
@@ -125,6 +130,25 @@ public interface API {
                                @Field("name") String name,
                                @Field("groupid") int groupID,
                                Callback<Response> callback);
+
+    //new api v2
+    @GET("/apiv2/articles/get/{groupID}")
+    public void getGroupArticlesnew(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<ArticleResponse> response);
+
+    //new api v2
+    @GET("/apiv2/Articles/{articleID}")
+    public void getArticles(@Header("Authorization") String auth,
+                            @Path("articleID") int articleID,
+                            Callback<Article> response);
+
+    //new api v2
+    @FormUrlEncoded
+    @POST("/apiv2/articles/Comment/{groupID}/{articleID}")
+    public void postArticleComments(@Header("Authorization") String auth,
+                                    @Path("groupID") int groupID,
+                                    @Path("articleID") int articleID,
+                                    @Field("ArticleCommentDescription") String comment,
+                                    Callback<ArticleComment> callback);
 
     @FormUrlEncoded
     @POST("/apiv2/groupmembers/invite")
@@ -177,7 +201,7 @@ public interface API {
     @FormUrlEncoded
     @POST("/apiv2/media/Comment")
     public void postMediaComments(@Header("Authorization") String auth,
-                                  @Field("MediaId") int  mediaID,
+                                  @Field("MediaId") int mediaID,
                                   @Field("Comment") String comment,
                                   Callback<Response> callback);
 
@@ -225,10 +249,6 @@ public interface API {
     public void putFolder(@Header("Authorization") String auth,
                           @Body Folder registerModel,
                           Callback<Response> callback);
-
-
-
-
 
     //new api v2
     @GET("/apiv2/notifications/all")      //here is the other url part.best way is to start using /
