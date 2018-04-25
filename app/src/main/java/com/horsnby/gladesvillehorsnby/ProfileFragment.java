@@ -44,7 +44,7 @@ public class ProfileFragment extends Fragment {
     private Button logoutButton;
 
 
-    public void ProfileFragment(){
+    public void ProfileFragment() {
 
     }
 
@@ -59,7 +59,7 @@ public class ProfileFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         //theres only create
-        if(item.getItemId() == R.id.update)this.updateAction();
+        if (item.getItemId() == R.id.update) this.updateAction();
         return super.onOptionsItemSelected(item);
     }
 
@@ -111,7 +111,6 @@ public class ProfileFragment extends Fragment {
         });
 
 
-
         usernameTV = v.findViewById(R.id.usernameTV);
 
         logoutButton = v.findViewById(R.id.logoutButton);
@@ -123,11 +122,10 @@ public class ProfileFragment extends Fragment {
         });
 
 
-
         DM.getApi().getMemberDetailing(DM.getAuthString(), new Callback<Profile>() {
             @Override
             public void success(Profile profilev2, Response response) {
-                if (response.getStatus()==200){
+                if (response.getStatus() == 200) {
 
                     //copy attributes over
                     DM.member.copyAttributesFromDetails(profilev2.getData());
@@ -138,7 +136,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void failure(RetrofitError error) {
                 Toast.makeText(ProfileFragment.this.getContext(),
-                        "Could not load member details:"+error.getMessage(),Toast.LENGTH_LONG).show();
+                        "Could not load member details:" + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -146,9 +144,7 @@ public class ProfileFragment extends Fragment {
         return v;
     }
 
-    private void modelToView()
-    {
-
+    private void modelToView() {
 
 
         emailET.setText(DM.member.username);
@@ -157,8 +153,8 @@ public class ProfileFragment extends Fragment {
         surnameET.setText(DM.member.lastName);
         countryET.setEnabled(false);
 
-        if(DM.member.gender != null) {
-            Log.d("hq","gender: "+DM.member.gender);
+        if (DM.member.gender != null) {
+            Log.d("hq", "gender: " + DM.member.gender);
             if (DM.member.gender.equalsIgnoreCase("M")) {
                 //  buttonSG1.setSelected(true);
                 genderSG.check(buttonSG1.getId());
@@ -175,7 +171,6 @@ public class ProfileFragment extends Fragment {
         postCodeET.setText(DM.member.postCode);
 
         usernameTV.setText(DM.member.username);
-
 
     }
 
@@ -198,8 +193,7 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    private void unregisterForPush()
-    {/*try {
+    private void unregisterForPush() {/*try {
             FirebaseInstanceId.getInstance().deleteInstanceId();
         } catch (IOException e) {
             e.printStackTrace();
@@ -209,8 +203,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    private void updateAction()
-    {
+    private void updateAction() {
         //view to model
 
         DM.member.firstName = firstNameET.getText().toString();
@@ -220,14 +213,13 @@ public class ProfileFragment extends Fragment {
 
 
         int checkedID = genderSG.getCheckedRadioButtonId();
-        if(buttonSG1.getId() == checkedID) DM.member.gender = "M";
-        if(buttonSG2.getId() == checkedID) DM.member.gender = "F";
+        if (buttonSG1.getId() == checkedID) DM.member.gender = "M";
+        if (buttonSG2.getId() == checkedID) DM.member.gender = "F";
         // DM.member.birthYear = birthYearET.getText().toString();
 
 
         final ProgressDialog pd = DM.getPD(this.getActivity(), "Updating Profile...");
         pd.show();
-
 
 
         DM.member.birthYear = birthYearET.getText().toString();
@@ -251,8 +243,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-
-
 
 
     }

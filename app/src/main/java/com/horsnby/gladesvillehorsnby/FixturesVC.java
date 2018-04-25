@@ -31,19 +31,17 @@ import retrofit.client.Response;
 
 public class FixturesVC extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
+    public static boolean oneShotRefresh = false;
     Group group;
     private ListView listView;
     private ArrayAdapter<Event> listAdapter;
     private SwipeRefreshLayout refreshLayout;
     private ImageView emptyIV;
-
-    public static boolean oneShotRefresh = false;
-
-
     //MODELS
     private List<Event> events = new Vector<Event>(); //empty
+    private boolean initialLoaded = false;
 
-    public FixturesVC(){
+    public FixturesVC() {
 
     }
 
@@ -62,7 +60,7 @@ public class FixturesVC extends Fragment implements SwipeRefreshLayout.OnRefresh
 
         listView = v.findViewById(R.id.list);
 
-        listAdapter= new ArrayAdapter<Event>(this.getActivity(), R.layout.event_cell){
+        listAdapter = new ArrayAdapter<Event>(this.getActivity(), R.layout.event_cell) {
 
 
             @Override
@@ -81,13 +79,13 @@ public class FixturesVC extends Fragment implements SwipeRefreshLayout.OnRefresh
                 tv_group_title.setText(e.groupName);
 
                 TextView locationTV = convertView.findViewById(R.id.locationTV);
-                locationTV.setText("At "+e.location);
+                locationTV.setText("At " + e.location);
 
-                String topString = " <font color='#d7d7d7'> At </font>" +e.location ;
+                String topString = " <font color='#d7d7d7'> At </font>" + e.location;
                 locationTV.setText(Html.fromHtml(topString));
 
                 TextView timeTV = convertView.findViewById(R.id.timeTV);
-                timeTV.setText(e.getDateString()+"\n"+e.getTimeString());
+                timeTV.setText(e.getDateString() + "\n" + e.getTimeString());
 
                 return convertView;
             }
@@ -105,7 +103,7 @@ public class FixturesVC extends Fragment implements SwipeRefreshLayout.OnRefresh
                 EventVC.event = e;
 
                 Intent i = new Intent(FixturesVC.this.getActivity(), EventVC.class);
-                i.putExtra("Key",e.groupName);
+                i.putExtra("Key", e.groupName);
                 startActivity(i);
             }
         });
@@ -117,23 +115,40 @@ public class FixturesVC extends Fragment implements SwipeRefreshLayout.OnRefresh
         return v;
     }
 
-    private boolean initialLoaded = false;
-    public void loadIfUnloaded(){
+    public void loadIfUnloaded() {
 
-        if(initialLoaded == false) loadData();
+        if (initialLoaded == false) loadData();
     }
 
-    private void loadData()
-    {
+    private void loadData() {
         initialLoaded = true;
 
-        final ProgressDialog pd = DM.getPD(this.getActivity(),"Loading Fixtures...");
-        if(true)pd.show();
+        final ProgressDialog pd = DM.getPD(this.getActivity(), "Loading Fixtures...");
+        if (true) pd.show();
 
         String auth = DM.getAuthString();
 
+        DM.getApi().getFixtureGroup(auth, group.groupId, new Callback<EventResponse>() {
+            @Override
+            public void success(EventResponse events, Response response) {
+                FixturesVC.this.events = events.getData();
+                Log.d("hq", "events: " + (events.getData()).size() + "");
+                listAdapter.notifyDataSetChanged();
+                refreshLayout.setRefreshing(false);
+                pd.dismiss();
 
-        DM.getApi().getAllEventings(auth,new Callback<EventResponse>() {
+                if (events.getData().size() == 0) emptyIV.setVisibility(View.VISIBLE);
+                else emptyIV.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("hq", "failed: " + error.getMessage());
+                refreshLayout.setRefreshing(false);
+                pd.dismiss();
+            }
+        });
+        /*DM.getApi().getAllEventings(auth,new Callback<EventResponse>() {
             @Override
             public void success(EventResponse events, Response response) {
 
@@ -155,7 +170,7 @@ public class FixturesVC extends Fragment implements SwipeRefreshLayout.OnRefresh
                 refreshLayout.setRefreshing(false);
                 pd.dismiss();
             }
-        });
+        });*/
     }
 
     @Override
@@ -167,8 +182,7 @@ public class FixturesVC extends Fragment implements SwipeRefreshLayout.OnRefresh
     @Override
     public void onResume() {
 
-        if(oneShotRefresh)
-        {
+        if (oneShotRefresh) {
             loadData();
             oneShotRefresh = false;
         }

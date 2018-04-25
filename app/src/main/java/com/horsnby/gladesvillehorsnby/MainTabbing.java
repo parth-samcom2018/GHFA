@@ -1,6 +1,5 @@
 package com.horsnby.gladesvillehorsnby;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -29,7 +28,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,8 +35,6 @@ import android.widget.Toast;
 import com.horsnby.gladesvillehorsnby.models.Group;
 import com.horsnby.gladesvillehorsnby.models.Profile;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -58,15 +54,15 @@ import retrofit.mime.TypedFile;
 
 public class MainTabbing extends BaseVC {
 
+    public static Group group;
+    Group g;
+    ProgressDialog pd;
+    boolean isDoubleClick = false;
+    String mCurrentPhotoPath;
     private int REQUEST_TAKE_PHOTO = 1;
     private int REQUEST_PICK_IMAGE = 2;
     private String TAG = "Register";
     private Context context = this;
-
-    Group g;
-
-    public static Group group;
-
     private NoticeBoardVCN noticeBoardVCN;
     private NoticeboardFragment noticeBoardVC;
     private GroupFragment groupsVC;
@@ -75,29 +71,21 @@ public class MainTabbing extends BaseVC {
     private FrameLayout frmL;
     private ImageButton ib_edit;
     private CircleImageView cp;
-
     private String[] titles = {"Noticeboard", "Groups", "Events", "Profile"};
-
-    private TextView tv_title,tv_create,mTitle,tvend,tv_left;
+    private TextView tv_title, tv_create, mTitle, tvend, tv_left;
     private LinearLayout ll_edit;
-
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private TabLayout tabLayout;
-
-
     private int[] tabIcons = {
             R.drawable.noticeboard_empty,
             R.drawable.groups_empty,
             R.drawable.events_empty,
             R.drawable.profile_empty
     };
-
-    ProgressDialog pd;
-
-    boolean isDoubleClick = false;
     private int MY_PERMISSIONS_REQUEST_CAMERA = 2000;
-
+    private Uri capturedImageUri;
+    private String imgDecodableString;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -144,8 +132,7 @@ public class MainTabbing extends BaseVC {
                 setTitle(titles[position]);
 
 
-                switch (position)
-                {
+                switch (position) {
                     case 0:
                         tvend.setVisibility(View.GONE);
                         tv_left.setVisibility(View.GONE);
@@ -154,24 +141,22 @@ public class MainTabbing extends BaseVC {
                         noticeBoardVC.loadIfUnloaded();
                         break;
                     case 1:
-                        try
-                        {
+                        try {
                             tvend.setVisibility(View.GONE);
                             tv_left.setVisibility(View.GONE);
                             frmL.setVisibility(View.GONE);
                             mTitle.setText("Groups");
                             //ll_edit.setVisibility(View.GONE);
                             groupsVC.loadIfUnloaded();
-                        }
-                        catch (NullPointerException e){
+                        } catch (NullPointerException e) {
                             e.printStackTrace();
-                            Log.e(TAG, "onPageSelected: "+e.getMessage());
+                            Log.e(TAG, "onPageSelected: " + e.getMessage());
                         }
 
                         break;
                     case 2:
 
-                        try{
+                        try {
                             tvend.setVisibility(View.VISIBLE);
                             tv_left.setVisibility(View.GONE);
                             frmL.setVisibility(View.GONE);
@@ -185,10 +170,9 @@ public class MainTabbing extends BaseVC {
                             });
                             eventsVC.loadIfUnloaded();
                             break;
-                        }
-                        catch (NullPointerException e){
+                        } catch (NullPointerException e) {
                             e.printStackTrace();
-                            Log.e(TAG, "onPageSelected: "+e.getMessage());
+                            Log.e(TAG, "onPageSelected: " + e.getMessage());
                         }
 
                     case 3:
@@ -205,7 +189,7 @@ public class MainTabbing extends BaseVC {
                         ib_edit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                if (checkpermission()==true){
+                                if (checkpermission() == true) {
                                     chooseImage();
                                 }
                                 checkpermission();
@@ -255,7 +239,7 @@ public class MainTabbing extends BaseVC {
                 //copy attributes over
                 DM.member.copyAttributesFromDetails(profilev2.getData());
                 //modelToView();
-                Picasso.with (MainTabbing.this)
+                Picasso.with(MainTabbing.this)
                         .load(DM.member.profileUrl)
                         //.networkPolicy(NetworkPolicy.NO_CACHE)
                         .placeholder(R.drawable.splashlogo)
@@ -266,13 +250,13 @@ public class MainTabbing extends BaseVC {
             public void failure(RetrofitError error) {
 
                 Toast.makeText(MainTabbing.this,
-                        "Could not load member details:"+error.getMessage(),Toast.LENGTH_LONG).show();
+                        "Could not load member details:" + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void onChangePassword() {
-        Intent i = new Intent(MainTabbing.this,ChangePassowrd.class);
+        Intent i = new Intent(MainTabbing.this, ChangePassowrd.class);
         startActivity(i);
     }
 
@@ -301,7 +285,6 @@ public class MainTabbing extends BaseVC {
                 int primaryColor1 = res.getColor(R.color.tab_background_selected);
                 tab.getIcon().setColorFilter(primaryColor1, PorterDuff.Mode.SRC_IN);
 
-
             }
 
             @Override
@@ -316,148 +299,8 @@ public class MainTabbing extends BaseVC {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-        });}
-
-    private void UpdateDetails() {
-        //view to model
-        pd = DM.getPD(this, "Updating Profile...");
-        pd.show();
-
-
-        DM.getApi().putMember(DM.getAuthString(), DM.member, new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-                Toast.makeText(MainTabbing.this, "User Update success!", Toast.LENGTH_LONG).show();
-                DM.hideKeyboard(MainTabbing.this);
-                pd.dismiss();
-
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Toast.makeText(MainTabbing.this, "could not update", Toast.LENGTH_LONG).show();
-                DM.hideKeyboard(MainTabbing.this);
-                pd.dismiss();
-
-            }
         });
     }
-
-
-
-
-    @SuppressLint("ResourceAsColor")
-    private void setUpIcon() {
-
-        tabLayout.getTabAt(0).setIcon(R.drawable.noticeboard_hover);
-        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
-        tabLayout.getTabAt(3).setIcon(tabIcons[3]);
-
-        Resources res1 = getResources();
-        int primaryColor = res1.getColor(R.color.tab_background_unselected);
-
-
-        tabLayout.getTabAt(0).setIcon(R.drawable.noticeboard_hover);
-        tabLayout.getTabAt(1).getIcon().setColorFilter(primaryColor, PorterDuff.Mode.SRC_IN);
-        tabLayout.getTabAt(2).getIcon().setColorFilter(primaryColor, PorterDuff.Mode.SRC_IN);
-        tabLayout.getTabAt(3).getIcon().setColorFilter(primaryColor, PorterDuff.Mode.SRC_IN);
-
-        tabLayout.setOnTabSelectedListener(
-                new TabLayout.ViewPagerOnTabSelectedListener(mViewPager)
-                {
-
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab)
-                    {
-
-                        Resources res = getResources();
-                        int primaryColor1 = res.getColor(R.color.tab_background_selected);
-                        tab.getIcon().setColorFilter(primaryColor1, PorterDuff.Mode.SRC_IN);
-
-                    }
-
-                    @Override
-                    public void onTabUnselected(TabLayout.Tab tab)
-                    {
-
-
-                        if (tabLayout.getSelectedTabPosition()==0){
-                            tabLayout.getTabAt(0).setIcon(R.drawable.noticeboard_empty);
-                            return;
-                        }
-
-                        tabLayout.getTabAt(0).getIcon().clearColorFilter();
-                        tab.getIcon().clearColorFilter();
-
-
-                    }
-
-                    @Override
-                    public void onTabReselected(TabLayout.Tab tab)
-                    {
-                        super.onTabReselected(tab);
-                    }
-                }
-        );
-
-
-    }
-
-
-
-    private class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-            if (position == 0){
-
-                return noticeBoardVC;
-            }
-            if (position == 1){
-                return groupsVC;
-            }
-            if (position == 2){
-                return eventsVC;
-            }
-            if (position == 3){
-                return profileVC;
-            }
-
-            else return noticeBoardVC;
-
-
-        }
-
-
-        @Override
-        public int getCount() {
-            // tab count
-
-            return 4;
-        }
-
-
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-
-            return titles[position];
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-
-            //return getItemPosition(object);
-            return super.getItemPosition(object);
-        }
-    }
-
 
     @Override
     public void onBackPressed() {
@@ -480,11 +323,10 @@ public class MainTabbing extends BaseVC {
 
             @Override
             public void run() {
-                isDoubleClick=false;
+                isDoubleClick = false;
             }
         }, 2000);
     }
-
 
     private boolean checkpermission() {
 
@@ -496,7 +338,7 @@ public class MainTabbing extends BaseVC {
 
         List<String> listPermissionsNeeded = new ArrayList<>();
 
-        if (permissionExternal != PackageManager.PERMISSION_GRANTED){
+        if (permissionExternal != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(android.Manifest.permission.READ_EXTERNAL_STORAGE);
         }
         if (permissionStorage != PackageManager.PERMISSION_GRANTED) {
@@ -504,14 +346,13 @@ public class MainTabbing extends BaseVC {
         }
 
         if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(MainTabbing.this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),MY_PERMISSIONS_REQUEST_CAMERA);
+            ActivityCompat.requestPermissions(MainTabbing.this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), MY_PERMISSIONS_REQUEST_CAMERA);
             return false;
         }
         return true;
     }
 
-    private void chooseImage()
-    {
+    private void chooseImage() {
 
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -519,8 +360,6 @@ public class MainTabbing extends BaseVC {
         startActivityForResult(galleryIntent, REQUEST_PICK_IMAGE);
     }
 
-    private Uri capturedImageUri;
-    String mCurrentPhotoPath;
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -540,8 +379,6 @@ public class MainTabbing extends BaseVC {
         return image;
     }
 
-
-    private String imgDecodableString;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -553,10 +390,10 @@ public class MainTabbing extends BaseVC {
 
             Log.d("hq", "request take photo");
             try {
-                b= MediaStore.Images.Media.getBitmap(MainTabbing.this.getContentResolver(), capturedImageUri);
+                b = MediaStore.Images.Media.getBitmap(MainTabbing.this.getContentResolver(), capturedImageUri);
                 Log.d("hipcook", "I now have a photo bitmap:" + b.getWidth());
-                float scaleFactor = 640f/ b.getWidth();
-                b = DM.createScaledBitmap(b,scaleFactor);
+                float scaleFactor = 640f / b.getWidth();
+                b = DM.createScaledBitmap(b, scaleFactor);
                 Log.d("hipcook", "I now have a scaled photo bitmap:" + b.getWidth());
 
 
@@ -564,13 +401,12 @@ public class MainTabbing extends BaseVC {
                 e.printStackTrace();
                 Log.d("hipcook", "bitmap exception");
             }
-        }
-        else if (requestCode == REQUEST_PICK_IMAGE &&
+        } else if (requestCode == REQUEST_PICK_IMAGE &&
                 resultCode == Activity.RESULT_OK &&
                 null != data) {
 
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
 
             Cursor cursor = MainTabbing.this.getContentResolver().query(selectedImage, filePathColumn, null, null, null);
@@ -580,13 +416,12 @@ public class MainTabbing extends BaseVC {
             imgDecodableString = cursor.getString(columnIndex);
             cursor.close();
 
-            try{
-                b = DM.decodeSampledBitmapFromFile(imgDecodableString, 640,640);
+            try {
+                b = DM.decodeSampledBitmapFromFile(imgDecodableString, 640, 640);
                 Log.d("hipcook", "I now have a bitmap:" + b.getWidth());
 
 
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -595,8 +430,7 @@ public class MainTabbing extends BaseVC {
             Toast.makeText(MainTabbing.this, "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
 
-        if(b != null)
-        {
+        if (b != null) {
             pd = DM.getPD(MainTabbing.this, "Updating Profile Image...");
             pd.show();
             cp.setImageBitmap(b);
@@ -609,7 +443,7 @@ public class MainTabbing extends BaseVC {
 
 
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                b.compress(Bitmap.CompressFormat.PNG, 0 , bos);
+                b.compress(Bitmap.CompressFormat.PNG, 0, bos);
                 byte[] bitmapdata = bos.toByteArray();
 
 
@@ -623,7 +457,7 @@ public class MainTabbing extends BaseVC {
                 DM.getApi().postProfileImage(DM.getAuthString(), typedImage, new Callback<Response>() {
                     @Override
                     public void success(Response response, Response response2) {
-                        Toast.makeText(MainTabbing.this,"Profile Image Updated",Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainTabbing.this, "Profile Image Updated", Toast.LENGTH_LONG).show();
                         pd.hide();
 
                     }
@@ -631,24 +465,69 @@ public class MainTabbing extends BaseVC {
                     @Override
                     public void failure(RetrofitError error) {
 
-                        Toast.makeText(MainTabbing.this,"Could not update profile image: "+error.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainTabbing.this, "Could not update profile image: " + error.getMessage(), Toast.LENGTH_LONG).show();
                         pd.hide();
                     }
                 });
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
-                Log.d("hq","file exception");
+                Log.d("hq", "file exception");
             }
 
         }
     }
 
-    private void newEventAction()
-    {
-        Log.d("hq","click!");
-        Intent i = new Intent(MainTabbing.this,EventFormVC.class);
+    private void newEventAction() {
+        Log.d("hq", "click!");
+        Intent i = new Intent(MainTabbing.this, EventFormVC.class);
         startActivity(i);
+    }
+
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+
+            if (position == 0) {
+
+                return noticeBoardVC;
+            }
+            if (position == 1) {
+                return groupsVC;
+            }
+            if (position == 2) {
+                return eventsVC;
+            }
+            if (position == 3) {
+                return profileVC;
+            } else return noticeBoardVC;
+
+        }
+
+        @Override
+        public int getCount() {
+            // tab count
+
+            return 4;
+        }
+
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+
+            return titles[position];
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+
+            //return getItemPosition(object);
+            return super.getItemPosition(object);
+        }
     }
 
 }

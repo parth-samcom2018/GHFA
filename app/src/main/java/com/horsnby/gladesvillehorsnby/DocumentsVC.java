@@ -51,11 +51,13 @@ public class DocumentsVC extends Fragment {
     private ImageView emptyIV;
 
     private Vector<Folder> backFolders = new Vector<Folder>();
+    // NEEDED with configChange in manifest, stops view changer from recalling onCreateView
+    private boolean initialLoaded = false;
+
 
     public DocumentsVC() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,21 +75,17 @@ public class DocumentsVC extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(backFolders.size() >0 )
-                {
+                if (backFolders.size() > 0) {
                     rootFolder = backFolders.lastElement();
-                    backFolders.removeElementAt(backFolders.size()-1);
+                    backFolders.removeElementAt(backFolders.size() - 1);
 
-                    if(backFolders.size() ==0)
-                    {
+                    if (backFolders.size() == 0) {
                         // rootFolder = null;
 
                     }
-                    Log.d("hq","size is just now "+backFolders.size());
-                }
-                else
-                {
-                    Log.d("hq","size is zero");
+                    Log.d("hq", "size is just now " + backFolders.size());
+                } else {
+                    Log.d("hq", "size is zero");
                     rootFolder = null;
 
                 }
@@ -98,7 +96,7 @@ public class DocumentsVC extends Fragment {
         mainTV = v.findViewById(R.id.textView);
 
         listView = v.findViewById(R.id.list);
-        listAdapter= new ArrayAdapter<Event>(this.getContext(), R.layout.document_cell){
+        listAdapter = new ArrayAdapter<Event>(this.getContext(), R.layout.document_cell) {
 
 
             @Override
@@ -111,23 +109,17 @@ public class DocumentsVC extends Fragment {
                 Folder f = null;
                 File file = null;
 
-                if(rootFolder !=null)
-                {
+                if (rootFolder != null) {
                     int numFolders = rootFolder.childFolders.size();
-                    if(position >= numFolders)
-                    {
+                    if (position >= numFolders) {
                         //we have a file
-                        file = rootFolder.files.get(position-numFolders);
-                    }
-                    else
-                    {
+                        file = rootFolder.files.get(position - numFolders);
+                    } else {
                         //we have a folder
                         f = rootFolder.childFolders.get(position);
                     }
 
-                }
-                else if(groupRootFolder != null)
-                {
+                } else if (groupRootFolder != null) {
                     f = groupRootFolder.folders.get(position);
                 }
 
@@ -135,17 +127,15 @@ public class DocumentsVC extends Fragment {
                 ImageView iv = convertView.findViewById(R.id.imageView);
                 ImageView editIV = convertView.findViewById(R.id.editIV);
 
-                if(f !=null)
-                {
+                if (f != null) {
                     firstTV.setText(f.folderName);
                     iv.setImageDrawable(getResources().getDrawable(R.drawable.folder));
                     editIV.setVisibility(View.GONE);
 
                 }
 
-                if(file!=null)
-                {
-                    firstTV.setText(""+file.fileName+ " ("+file.fileDescription+")");
+                if (file != null) {
+                    firstTV.setText("" + file.fileName + " (" + file.fileDescription + ")");
                     iv.setImageDrawable(getResources().getDrawable(R.drawable.filetext_75));
                     editIV.setVisibility(View.GONE);
                 }
@@ -157,21 +147,19 @@ public class DocumentsVC extends Fragment {
                     public void onClick(View v) {
 
 
-                        if(chosenFolder !=null)
-                        {
-                            if(rootFolder!=null) backFolders.add(rootFolder);
+                        if (chosenFolder != null) {
+                            if (rootFolder != null) backFolders.add(rootFolder);
                             rootFolder = chosenFolder;
 
                         }
 
-                        if(chosenFile !=null)
-                        {
+                        if (chosenFile != null) {
                             //open file
                             // Toast.makeText(getContext(),"Open File "+chosenFile.fileName,Toast.LENGTH_LONG).show();
 
                             //USE google opener! http://stackoverflow.com/questions/4947591/open-a-pdf-file-inside-a-webview
 
-                            String fileURL = "http://docs.google.com/gview?embedded=true&url="+chosenFile.url;
+                            String fileURL = "http://docs.google.com/gview?embedded=true&url=" + chosenFile.url;
 
                             WebVC.url = fileURL;
                             WebVC.title = chosenFile.fileName;
@@ -201,16 +189,11 @@ public class DocumentsVC extends Fragment {
             @Override
             public int getCount() {
 
-                if(rootFolder != null)
-                {
+                if (rootFolder != null) {
                     return rootFolder.childFolders.size() + rootFolder.files.size();
-                }
-
-                else if(groupRootFolder != null)
-                {
+                } else if (groupRootFolder != null) {
                     return groupRootFolder.folders.size();
-                }
-                else return 0;
+                } else return 0;
             }
         };
         listView.setAdapter(listAdapter);
@@ -227,40 +210,28 @@ public class DocumentsVC extends Fragment {
         return v;
     }
 
-
-
-    private void modelToView()
-    {
-        if(rootFolder !=null)
-        {
+    private void modelToView() {
+        if (rootFolder != null) {
             backButton.setVisibility(View.VISIBLE);
             mainTV.setText("Listing for: " + rootFolder.folderName);
-        }
-        else if(groupRootFolder != null)
-        {
+        } else if (groupRootFolder != null) {
             backButton.setVisibility(View.INVISIBLE);
             mainTV.setText("Listing for: " + groupRootFolder.groupName);
-        }
-        else
-        {
+        } else {
             mainTV.setText("");
         }
 
         listAdapter.notifyDataSetChanged();
     }
 
-    // NEEDED with configChange in manifest, stops view changer from recalling onCreateView
-    private boolean initialLoaded = false;
-    public void loadIfUnloaded()
-    {
-        if(initialLoaded == false) loadData();
+    public void loadIfUnloaded() {
+        if (initialLoaded == false) loadData();
     }
 
-    private void loadData()
-    {
+    private void loadData() {
         initialLoaded = true;
-        Log.d("hq","groupID: "+group.groupId);
-        final ProgressDialog pd = DM.getPD(this.getContext(),"Loading Folders...");
+        Log.d("hq", "groupID: " + group.groupId);
+        final ProgressDialog pd = DM.getPD(this.getContext(), "Loading Folders...");
         pd.show();
 
 
@@ -270,19 +241,17 @@ public class DocumentsVC extends Fragment {
 
                 try {
                     groupRootFolder = gfs.getData();
-                    rootFolder=null;
+                    rootFolder = null;
                     backFolders = new Vector<Folder>();
                     modelToView();
                     pd.dismiss();
                     refreshLayout.setRefreshing(false);
 
-                    if((gfs.getData()).folders.size()==0) emptyIV.setVisibility(View.VISIBLE);
+                    if ((gfs.getData()).folders.size() == 0) emptyIV.setVisibility(View.VISIBLE);
                     else emptyIV.setVisibility(View.GONE);
-                }
-
-                catch (NullPointerException n){
+                } catch (NullPointerException n) {
                     n.printStackTrace();
-                    Log.d("hp", "error: " +n);
+                    Log.d("hp", "error: " + n);
                 }
             }
 
@@ -290,7 +259,7 @@ public class DocumentsVC extends Fragment {
             public void failure(RetrofitError error) {
                 pd.dismiss();
                 refreshLayout.setRefreshing(false);
-                Toast.makeText(getContext(),"Could not load documents "+error.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Could not load documents " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -308,20 +277,20 @@ public class DocumentsVC extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
 
-        if(item.getItemId() == R.id.create) this.newFolderAction();
+        if (item.getItemId() == R.id.create) this.newFolderAction();
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void newFolderAction()
-    {
-        Log.d("hq","new folder click!");
+    private void newFolderAction() {
+        Log.d("hq", "new folder click!");
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this.getContext());
 
         final EditText edittext = new EditText(this.getActivity());
         String message = "Enter your folder name";
-        if(rootFolder != null) message += " it will be created as a subfolder of: "+rootFolder.folderName;
+        if (rootFolder != null)
+            message += " it will be created as a subfolder of: " + rootFolder.folderName;
 
         alert.setMessage(message);
         alert.setTitle("Create Folder");
@@ -332,11 +301,11 @@ public class DocumentsVC extends Fragment {
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 String name = edittext.getText().toString();
-                Log.d("hq","create folder with name:"+name);
+                Log.d("hq", "create folder with name:" + name);
 
                 Folder f = new Folder();
                 f.folderName = name;
-                if(rootFolder != null )f.parentFolderId = rootFolder.folderId;
+                if (rootFolder != null) f.parentFolderId = rootFolder.folderId;
                 else f.parentFolderId = null;
 
                 f.groupId = group.groupId;
@@ -356,7 +325,7 @@ public class DocumentsVC extends Fragment {
                     @Override
                     public void failure(RetrofitError error) {
 
-                        Toast.makeText(DocumentsVC.this.getActivity(), "Could not create folder:"+error.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(DocumentsVC.this.getActivity(), "Could not create folder:" + error.getMessage(), Toast.LENGTH_LONG).show();
                         DM.hideKeyboard(DocumentsVC.this.getActivity());
                     }
                 });
@@ -372,9 +341,8 @@ public class DocumentsVC extends Fragment {
         alert.show();
     }
 
-    private void editFolderAction(final Folder editFolder)
-    {
-        Log.d("hq","edit folder click!");
+    private void editFolderAction(final Folder editFolder) {
+        Log.d("hq", "edit folder click!");
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this.getContext());
 
@@ -389,10 +357,9 @@ public class DocumentsVC extends Fragment {
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 String name = edittext.getText().toString();
-                Log.d("hq","update folder with name:"+name);
+                Log.d("hq", "update folder with name:" + name);
 
                 editFolder.folderName = name;
-
 
 
                 DM.getApi().putFolder(DM.getAuthString(), editFolder, new Callback<Response>() {
@@ -408,7 +375,7 @@ public class DocumentsVC extends Fragment {
                     @Override
                     public void failure(RetrofitError error) {
 
-                        Toast.makeText(DocumentsVC.this.getActivity(), "Could not update folder:"+error.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(DocumentsVC.this.getActivity(), "Could not update folder:" + error.getMessage(), Toast.LENGTH_LONG).show();
                         DM.hideKeyboard(DocumentsVC.this.getActivity());
                     }
                 });

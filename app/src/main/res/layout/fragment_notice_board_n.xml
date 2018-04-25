@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/empty"
-            android:src="@drawable/noticeboard_empty"
+            android:src="@drawable/noticeboard_empty_ghfa"
             android:visibility="gone"
             />
 

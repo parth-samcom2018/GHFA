@@ -90,6 +90,8 @@ public interface API {
     @GET("/apiv2/events/all")      //here is the other url part.best way is to start using /
     public void getAllEventings(@Header("Authorization") String auth, Callback<EventResponse> response);
 
+    @GET("/apiv2/events/group/{groupID}")
+    public void getFixtureGroup(@Header("Authorization") String auth,@Path("groupID") int groupID, Callback<EventResponse> response);
 
     @GET("/apiv2/groupmembers/all")
     void getClubNames(Callback<ClubResponse> callback);
@@ -164,12 +166,12 @@ public interface API {
     public void postFolder(@Header("Authorization") String auth,
                            @Body Folder registerModel,
                            Callback<Response> callback);
+    //older api
+    @GET("/apiv2/Articles/{articleID}")
+    public void getArticle(@Header("Authorization") String auth,
+                           @Path("articleID") int articleID,
+                           Callback<Article> response);
 
-    //new api v2
-    @POST("/apiv2/folder/Create")
-    public void postFolders(@Header("Authorization") String auth,
-                            @Body Folder registerModel,
-                            Callback<Response> callback);
 
     @POST("/apiv2/notifications/add")
     public void postNotifications(@Header("Authorization") String auth,

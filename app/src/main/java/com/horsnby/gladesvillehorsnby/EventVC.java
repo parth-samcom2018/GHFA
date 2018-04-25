@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,11 +44,11 @@ public class EventVC extends BaseVC implements SwipeRefreshLayout.OnRefreshListe
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_event_vc);
 
-
         //this.setTitle(event.eventName);
 
         tv_event_title = findViewById(R.id.tv_event_title);
         //tv_event_title.setText(event.eventName);
+
 
         Intent intent = getIntent();
         Bundle bd = intent.getExtras();
@@ -81,8 +82,6 @@ public class EventVC extends BaseVC implements SwipeRefreshLayout.OnRefreshListe
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(this.getSupportFragmentManager());
-
-
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.viewPager_event);

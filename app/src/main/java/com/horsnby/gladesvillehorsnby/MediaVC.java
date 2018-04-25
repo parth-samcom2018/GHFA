@@ -335,7 +335,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                         pd.dismiss();
                         dialog.dismiss();
                         DM.hideKeyboard(MediaVC.this.getActivity());
-
+                        refreshLayout.setRefreshing(false);
                     }
 
                     @Override
@@ -495,7 +495,10 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
             b = DM.decodeSampledBitmapFromFile(imgDecodableString, 640,640);
             Log.d("hipcook", "I now have a bitmap:" + b.getWidth());
 
-
+            if (imgDecodableString.isEmpty()){
+                Toast.makeText(MediaVC.this.getActivity(), "Take another picture", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
         } else {
             Toast.makeText(this.getActivity(), "You haven't picked Image", Toast.LENGTH_LONG).show();
