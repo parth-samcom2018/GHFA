@@ -45,6 +45,7 @@ import android.widget.Toast;
 
 import com.horsnby.gladesvillehorsnby.models.Group;
 import com.horsnby.gladesvillehorsnby.models.MediaAlbum;
+import com.horsnby.gladesvillehorsnby.models.MediaAlbumResponse;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -328,7 +329,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                 pd = DM.getPD(MediaVC.this.getActivity(),"Loading Creating Album..");
                 pd.show();
 
-                DM.getApi().postMediaAlbum(DM.getAuthString(), name,  group.groupId, new Callback<Response>() {
+                DM.getApi().postMediaAlbum(DM.getAuthString(), name,  group.groupId, "",new Callback<Response>() {
                     @Override
                     public void success(Response response, Response response2) {
                         Toast.makeText(MediaVC.this.getActivity(),"Album Created!",Toast.LENGTH_LONG).show();
@@ -725,7 +726,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
         pd.show();
 
 
-        if(group != null) DM.getApi().getGroupMediaAlbums(DM.getAuthString(), group.groupId, new Callback<List<MediaAlbum>>() {
+        /*if(group != null) DM.getApi().getGroupingMediaAlbums(DM.getAuthString(), group.groupId, new Callback<List<MediaAlbum>>() {
             @Override
             public void success(List<MediaAlbum> mediaAlbums, Response response) {
                 albums = mediaAlbums;
@@ -749,15 +750,12 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                 refreshLayout.setRefreshing(false);
 
             }
-        });
+        });*/
 
-        /*if (group != null) DM.getApi().getGroupingMediaAlbums(DM.getAuthString(), group.groupId, new Callback<MediaAlbumResponse>() {
+        if(group != null) DM.getApi().getGroupingMediaAlbums(DM.getAuthString(), group.groupId, new Callback<MediaAlbumResponse>() {
             @Override
-            public void success(MediaAlbumResponse mediaAlbumResponse, Response response) {
-
-
-                albums = mediaAlbumResponse.getData().mediaModels;
-
+            public void success(MediaAlbumResponse mediaAlbums, Response response) {
+                albums = mediaAlbums.getData();
                 for(MediaAlbum a : albums)
                 {
                     a.sortMediaAlbumsByDate();
@@ -767,8 +765,7 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
                 refreshLayout.setRefreshing(false);
                 pd.dismiss();
 
-
-                if(mediaAlbumResponse.getData().size()==0) emptyIV.setVisibility(View.VISIBLE);
+                if(mediaAlbums.getData().size()==0) emptyIV.setVisibility(View.VISIBLE);
                 else emptyIV.setVisibility(View.GONE);
 
             }
@@ -777,9 +774,9 @@ public class MediaVC extends Fragment implements CropActivity.CropProtocol {
             public void failure(RetrofitError error) {
                 pd.dismiss();
                 refreshLayout.setRefreshing(false);
-                Toast.makeText(MediaVC.this.getActivity(), "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
-        });*/
+        });
     }
 
     private class RoundedCornersTransform implements Transformation {

@@ -41,11 +41,12 @@ public class GroupVC extends BaseVC {
     private TabLayout tabLayout;
     private NoticeBoardVCN noticeBoardVCN;
     private MediaVC mediaVC;
+    private VideoVC videoVC;
     private ArticlesVC articlesVC;
     private FixturesVC fixturesVC;
     private LaddersVC laddersVC;
     private DocumentsVC documentsVC;
-    private String[] titles = {"Notification", "Media", "Articles", "Fixtures", "Ladders", "Documents"};
+    private String[] titles = {"Notification", "Fixtures", "Ladders", "Photos", "Videos", "Articles", "Documents"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,27 +97,34 @@ public class GroupVC extends BaseVC {
                         case 0:
 
                             noticeBoardVCN.loadIfUnloaded();
-
                             break;
-                        case 1:
-                            mediaVC.loadIfUnloaded();
 
+                        case 1:
+
+                            fixturesVC.loadIfUnloaded();
                             break;
 
                         case 2:
-                            articlesVC.loadIfUnloaded();
 
+                            laddersVC.loadIfUnloaded();
                             break;
 
                         case 3:
-                            fixturesVC.loadIfUnloaded();
-                            break;
-                        case 4:
-                            laddersVC.loadIfUnloaded();
 
+                            mediaVC.loadIfUnloaded();
+                            break;
+
+                        case 4:
+
+                            videoVC.loadIfUnloaded();
                             break;
 
                         case 5:
+
+                            articlesVC.loadIfUnloaded();
+                            break;
+
+                        case 6:
                             documentsVC.loadIfUnloaded();
                             break;
                     }
@@ -141,17 +149,20 @@ public class GroupVC extends BaseVC {
             this.noticeBoardVCN = (NoticeBoardVCN) NoticeBoardVCN.instantiate(this, NoticeBoardVCN.class.getName());
             this.noticeBoardVCN.group = group;
 
-            this.mediaVC = (MediaVC) MediaVC.instantiate(this, MediaVC.class.getName());
-            this.mediaVC.group = group;
-
-            this.articlesVC = (ArticlesVC) ArticlesVC.instantiate(this, ArticlesVC.class.getName());
-            this.articlesVC.group = group;
-
             this.fixturesVC = (FixturesVC) FixturesVC.instantiate(this, FixturesVC.class.getName());
             this.fixturesVC.group = group;
 
-            this.laddersVC = (LaddersVC) LaddersVC.instantiate(this, LaddersVC.class.getName());
-            this.laddersVC.ladder = ladder;
+            this.laddersVC = (LaddersVC)LaddersVC.instantiate(this, LaddersVC.class.getName());
+            this.laddersVC.group = group;
+
+            this.mediaVC = (MediaVC) MediaVC.instantiate(this, MediaVC.class.getName());
+            this.mediaVC.group = group;
+
+            this.videoVC = (VideoVC) VideoVC.instantiate(this, VideoVC.class.getName());
+            this.videoVC.group = group;
+
+            this.articlesVC = (ArticlesVC) ArticlesVC.instantiate(this, ArticlesVC.class.getName());
+            this.articlesVC.group = group;
 
             this.documentsVC = (DocumentsVC) DocumentsVC.instantiate(this, DocumentsVC.class.getName());
             this.documentsVC.group = group;
@@ -235,10 +246,11 @@ public class GroupVC extends BaseVC {
         public Fragment getItem(int position) {
 
             if (position == 0) return noticeBoardVCN;
-            else if (position == 1) return mediaVC;
-            else if (position == 2) return articlesVC;
-            else if (position == 3) return fixturesVC;
-            else if (position == 4) return laddersVC;
+            else if (position == 1) return fixturesVC;
+            else if (position ==2) return laddersVC;
+            else if (position == 3) return mediaVC;
+            else if (position == 4) return videoVC;
+            else if (position ==5) return articlesVC;
             else return documentsVC;
 
         }
@@ -248,7 +260,7 @@ public class GroupVC extends BaseVC {
         public int getCount() {
             // tab count
 
-            return 6;
+            return 7;
         }
 
         @Override

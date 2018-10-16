@@ -26,6 +26,7 @@ import java.util.List;
 import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.Body;
+import retrofit.http.DELETE;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -126,12 +127,12 @@ public interface API {
                                   @Field("Comment") String comment,
                                   Callback<Response> callback);
 
-    @FormUrlEncoded
+    /*@FormUrlEncoded
     @POST("/api/media/album")
     public void postMediaAlbum(@Header("Authorization") String auth,
                                @Field("name") String name,
                                @Field("groupid") int groupID,
-                               Callback<Response> callback);
+                               Callback<Response> callback);*/
 
     //new api v2
     @GET("/apiv2/articles/get/{groupID}")
@@ -231,12 +232,16 @@ public interface API {
                                   Callback<Response> response);
 
     //older api
-    @GET("/api/media/get/{groupID}")
-    public void getGroupMediaAlbums(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<List<MediaAlbum>> response);
+    /*@GET("/api/media/get/{groupID}")
+    public void getGroupMediaAlbums(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<List<MediaAlbum>> response);*/
 
     //new api v2
     @GET("/apiv2/media/get/{groupID}")
     public void getGroupingMediaAlbums(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<MediaAlbumResponse> response);
+
+
+    @GET("/apiv2/video/get/{groupID}")
+    public void getGroupingVideoAlbum(@Header("Authorization") String auth, @Path("groupID") int groupID, Callback<MediaAlbumResponse> response);
 
     @GET("/apiv2/ladders/14")
     public void getLadders(@Header("Authorization") String auth, Callback<LaddersResponse> response);
@@ -263,4 +268,58 @@ public interface API {
     public void postProfileImage(@Header("Authorization") String auth,
                                  @Part("image") TypedFile file,
                                  Callback<Response> response);
+
+    @DELETE("/apiv2/notifications/delete/{notificationId}")
+    public void notificationDelete(@Header("Authorization") String auth,
+                                   @Path("notificationId") int notificationID,
+                                   Callback<Response> callback);
+
+    @DELETE("/apiv2/notifications/comment/delete/{notificationCommentId}")
+    public void CommentsDelete(@Header("Authorization") String auth,
+                               @Path("notificationCommentId") int notificationCommentId,
+                               Callback<Response> callback);
+
+    @FormUrlEncoded
+    @POST("/apiv2/media/postvideo")
+    public void postVideoToAlbum(@Header("Authorization") String auth,
+                                 @Field("mediaAlbumId") int mediaAlbumID,
+                                 @Field("videourl") String url,
+                                 Callback<Response> callback);
+
+    @FormUrlEncoded
+    @POST("/apiv2/media/album")
+    public void postMediaAlbum(@Header("Authorization") String auth,
+                               @Field("name") String name,
+                               @Field("groupid") int groupID,
+                               @Field("albumtype") String type,
+                               Callback<Response> callback);
+
+    @FormUrlEncoded
+    @POST("/apiv2/media/album")
+    public void postVideoAlbum(@Header("Authorization") String auth,
+                               @Field("name") String name,
+                               @Field("groupid") int groupID,
+                               @Field("albumtype") String type,
+                               Callback<Response> callback);
+
+    @DELETE("/apiv2/media/comment/delete/{mediacommentid}")
+    public void mediaCommentdelete(@Header("Authorization") String auth,
+                                   @Path("mediacommentid") int mediacommentid,
+                                   Callback<Response> callback);
+
+    @GET("/apiv2/video/album/{mediaAlbumId}")
+    public void getVideoAlbum(@Header("Authorization") String auth, @Path("mediaAlbumId") int mediaAlbumID, Callback<MediaAlbum> response);
+
+    @DELETE("/apiv2/media/delete/{MediaId}")
+    public void deleteMediaItem(@Header("Authorization") String auth,
+                                @Path("MediaId") int mediaID,
+                                Callback<Response> callback);
+
+    @GET("/apiv2/video/album/{id}")
+    public void getMediaModelRes(@Header("Authorization") String auth, @Path("id") int mediaAlbumID,  Callback<MediaAlbumResponse> response);
+
+    @DELETE("/apiv2/events/comment/delete/{eventcommentID}")
+    public void eventCommentDelete(@Header("Authorization") String auth,
+                                   @Path("eventcommentID") int eventcommentID,
+                                   Callback<Response> callback);
 }

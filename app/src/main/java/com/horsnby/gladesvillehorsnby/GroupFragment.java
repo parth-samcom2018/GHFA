@@ -129,6 +129,7 @@ public class GroupFragment extends Fragment {
                     GroupVC.group = g;
                     Intent i = new Intent(GroupFragment.this.getActivity(), GroupVC.class);
                     startActivity(i);
+                    Log.d("group", "id : " + g.groupId);
                 }
                 catch (NullPointerException e){
                     e.printStackTrace();
