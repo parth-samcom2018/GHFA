@@ -52,7 +52,7 @@ import retrofit.client.Response;
 
 public class VideoDetailVC extends BaseVC {
 
-    private static final String TAG = "QLD";
+    private static final String TAG = "GHFA";
     public static MediaAlbum mediaAlbum;
     //public static VideoAlbum mediaAlbum;
     public static int selectedMediaId;

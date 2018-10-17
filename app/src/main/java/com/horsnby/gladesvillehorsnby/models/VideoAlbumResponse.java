@@ -1,6 +1,4 @@
-package com.horsnby.gladesvillehorsnby.api;
-
-import com.horsnby.gladesvillehorsnby.models.MediaAlbum;
+package com.horsnby.gladesvillehorsnby.models;
 
 import java.util.List;
 

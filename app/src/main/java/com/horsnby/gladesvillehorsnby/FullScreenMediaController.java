@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.MediaController;
 
-class FullScreenMediaController extends MediaController {
+public class FullScreenMediaController extends MediaController {
 
     private ImageButton fullScreen;
     private String isFullScreen;
