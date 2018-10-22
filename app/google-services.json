@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "958250178583-ibkuf9275fhn1fckjbcjavn4hs9prsuf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.horsnby.gladesvillehorsnby",
+            "certificate_hash": "4425e4ade43eb8c2d06e58a13c365d9a3781b49e"
+          }
+        },
+        {
           "client_id": "958250178583-ajgh3klr0mq64gs8fbapa1dpumatnh5g.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "958250178583-ajgh3klr0mq64gs8fbapa1dpumatnh5g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "958250178583-dsff7etoedtf521umrh603kn563epf07.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.thehqnetwork.GHFA"
+              }
+            }
+          ]
         },
         "ads_service": {
           "status": 2

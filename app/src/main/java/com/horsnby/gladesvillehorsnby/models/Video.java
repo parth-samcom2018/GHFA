@@ -14,5 +14,4 @@ public class Video {
     public Date dateAdded;
     public List<VideoComment> comments;
     public int mediaId;
-
 }

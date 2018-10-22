@@ -6,7 +6,7 @@ public class VideoAlbumResponse {
 
     private boolean error;
     private String message;
-    private List<MediaAlbum> data;
+    private List<VideoAlbum> data;
 
     public VideoAlbumResponse() {
     }
@@ -27,11 +27,11 @@ public class VideoAlbumResponse {
         this.message = message;
     }
 
-    public List<MediaAlbum> getData() {
+    public List<VideoAlbum> getData() {
         return data;
     }
 
-    public void setData(List<MediaAlbum> data) {
+    public void setData(List<VideoAlbum> data) {
         this.data = data;
     }
 }

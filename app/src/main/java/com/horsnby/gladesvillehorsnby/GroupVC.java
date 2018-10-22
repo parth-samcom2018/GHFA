@@ -252,7 +252,6 @@ public class GroupVC extends BaseVC {
             else if (position == 4) return videoVC;
             else if (position ==5) return articlesVC;
             else return documentsVC;
-
         }
 
 

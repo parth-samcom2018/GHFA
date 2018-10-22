@@ -410,6 +410,7 @@ public class NoticeboardFragment extends Fragment {
                             dialog.setContentView(R.layout.my_notifications);
                             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
+
                             Log.d(TAG, "memberID: " + DM.member.memberId);
                             Log.d(TAG, "NotificationmemberID: " + n.memberId);
 
@@ -508,7 +509,7 @@ public class NoticeboardFragment extends Fragment {
                         if (n.notificationTypeId == Notification.TYPE_VIDEO) {
                             final ProgressDialog pd = DM.getPD(getActivity(), "Loading Video...");
                             pd.show();
-                            DM.getApi().getVideoAlbum(DM.getAuthString(), n.notificationItemId, new Callback<MediaAlbum>() {
+                            DM.getApi().getMediaAlbum(DM.getAuthString(), n.notificationItemId, new Callback<MediaAlbum>() {
                                 @Override
                                 public void success(MediaAlbum mediaAlbum, Response response) {
 
@@ -516,7 +517,7 @@ public class NoticeboardFragment extends Fragment {
                                     /*MediaDetailVC.mediaAlbum = mediaAlbum;
                                     MediaDetailVC.selectedMediaId = n.mediaId; //can be null
 
-                                    Intent i = new Intent(NoticeBoardVCN.this.getActivity(), MediaDetailVC.class);
+                                    Intent i = new Intent(NoticeboardFragment.this.getActivity(), MediaDetailVC.class);
                                     startActivity(i);*/
 
                                     VideoDetailVC.mediaAlbum = mediaAlbum;
