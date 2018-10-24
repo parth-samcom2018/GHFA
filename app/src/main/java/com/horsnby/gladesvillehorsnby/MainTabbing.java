@@ -161,13 +161,13 @@ public class MainTabbing extends BaseVC {
                             tv_left.setVisibility(View.GONE);
                             frmL.setVisibility(View.GONE);
                             mTitle.setText("Events");
-                            tvend.setText("CREATE");
+                            /*tvend.setText("CREATE");
                             tvend.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     newEventAction();
                                 }
-                            });
+                            });*/
                             eventsVC.loadIfUnloaded();
                             break;
                         } catch (NullPointerException e) {
