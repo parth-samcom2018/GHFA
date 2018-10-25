@@ -46,7 +46,7 @@ public class GroupFragment extends Fragment {
     private GridView gridView;
     private ArrayAdapter<Event> gridAdapter;
     private SwipeRefreshLayout refreshLayout;
-    private ImageView emptyIV;
+    private ImageView emptyIV,tv_group_edit;
     private ProgressDialog pd;
 
 
@@ -155,6 +155,7 @@ public class GroupFragment extends Fragment {
         isOnline();
 
         emptyIV = v.findViewById(R.id.empty);
+        tv_group_edit = v.findViewById(R.id.tvMessage_edit);
 
         final ProgressDialog pd = DM.getPD(getActivity(),"Loading Groups...");
         if(this.isVisible())pd.show();
@@ -361,9 +362,14 @@ public class GroupFragment extends Fragment {
                 refreshLayout.setRefreshing(false);
                 pd.dismiss();
 
-                if(gs.getData().size()==0) emptyIV.setVisibility(View.VISIBLE);
-                else emptyIV.setVisibility(View.GONE);
-
+                if(gs.getData().size()==0)  {
+                    emptyIV.setVisibility(View.VISIBLE);
+                    tv_group_edit.setVisibility(View.GONE);
+                }
+                else {
+                    emptyIV.setVisibility(View.GONE);
+                    tv_group_edit.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
